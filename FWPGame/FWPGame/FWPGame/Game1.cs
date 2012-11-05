@@ -19,6 +19,10 @@ namespace FWPGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        SpriteFont chiF;
+        Vector2 FontPos;
+        Vector2 FontOrigin;
+        String motd = "Hello Camco";
 
         public Game1()
         {
@@ -47,8 +51,11 @@ namespace FWPGame
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            chiF = Content.Load<SpriteFont>("ChillerFont");
             // TODO: use this.Content to load your game content here
+
+            FontPos = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2,
+                graphics.GraphicsDevice.Viewport.Height / 2);
         }
 
         /// <summary>
@@ -83,8 +90,15 @@ namespace FWPGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
+            spriteBatch.Begin();
             // TODO: Add your drawing code here
+
+            FontOrigin = chiF.MeasureString(motd) / 2;
+
+            spriteBatch.DrawString(chiF, motd, FontPos, Color.Yellow, 0, FontOrigin, 1.0f,
+                SpriteEffects.None, 0.5f);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
