@@ -16,34 +16,15 @@ namespace FWPGame.Engine
     public class Cursor : Sprite
     {
         private FWPGame myGame;
-        private ArrayList myPowers;
         private List<Sprite> sprites;
-        public Cursor(Texture2D texture, Vector2 position, FWPGame game, ArrayList powers) :
+        public Cursor(Texture2D texture, Vector2 position, FWPGame game) :
             base(texture, position)
         {
             myGame = game;
             myTexture = texture;
             myPosition = position;
-            myPowers = powers;
             SetupInput();
             sprites = new List<Sprite>();
-        }
-
-
-        /// <summary>
-        /// Might be  obsolete now?  Not sure...
-        /// </summary>
-        /// <param name="mState"></param>
-        /// <returns></returns>
-        public List<Sprite> getTileSprites(MouseState mState)
-        {
-            List<Sprite> tileSprites = new List<Sprite>();
-            MapTile tile = myGame.map.GetTile(this);
-            if (tile != null)
-            {
-                tileSprites = tile.mySprites;
-            }
-            return tileSprites;
         }
 
         /// <summary>
@@ -58,6 +39,7 @@ namespace FWPGame.Engine
 
         /// <summary>
         /// Get the map to get the tile using itself as a parameter.  Pretty roundabout and silly, but it works..
+        /// #refactorthis
         /// </summary>
         /// <returns></returns>
         public MapTile getTile()
