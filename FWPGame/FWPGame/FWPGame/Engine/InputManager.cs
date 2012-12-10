@@ -59,7 +59,8 @@ namespace FWPGame.Engine
         }
 
         // Perform the functions in the MouseDictionary, given the current MouseState.
-        public static void ActMouse(MouseState mouseState)
+        // Only do Mouse Click actions when the parameter is true.
+        public static void ActMouse(MouseState mouseState, bool doMouseClicks)
         {
             // I'm predicting that any method that cares about the mouse clicks will also care WHERE
             // the mouse click happened.
@@ -70,34 +71,22 @@ namespace FWPGame.Engine
             // The good news is that more buttons aren't likely to be added to the mouse any time soon.
             if (mouseState.LeftButton == ButtonState.Pressed && myMouseMap.ContainsKey(LEFT_BUTTON))
             {
-                /*foreach (GameAction a in myMouseMap[LEFT_BUTTON])
+                if (doMouseClicks)
                 {
-                    a.Invoke(parameterList);
-                }*/
-                GameAction action = myMouseMap[LEFT_BUTTON][myMouseMap[LEFT_BUTTON].Count - 1];
-                action.Invoke(parameterList);
-            }
-            if (mouseState.LeftButton == ButtonState.Pressed && myMouseMap.ContainsKey(LEFT_BUTTON))
-            {
-                foreach (GameAction a in myMouseMap[LEFT_BUTTON])
-                {
-                    a.Invoke(parameterList);
+                    foreach (GameAction a in myMouseMap[LEFT_BUTTON])
+                    {
+                        a.Invoke(parameterList);
+                    }
                 }
             }
             if (mouseState.RightButton == ButtonState.Pressed && myMouseMap.ContainsKey(RIGHT_BUTTON))
             {
-                /*foreach (GameAction a in myMouseMap[LEFT_BUTTON])
+                if (doMouseClicks)
                 {
-                    a.Invoke(parameterList);
-                }*/
-                GameAction action = myMouseMap[RIGHT_BUTTON][myMouseMap[RIGHT_BUTTON].Count - 1];
-                action.Invoke(parameterList);
-            }
-            if (mouseState.RightButton == ButtonState.Pressed && myMouseMap.ContainsKey(RIGHT_BUTTON))
-            {
-                foreach (GameAction a in myMouseMap[RIGHT_BUTTON])
-                {
-                    a.Invoke(parameterList);
+                    foreach (GameAction a in myMouseMap[RIGHT_BUTTON])
+                    {
+                        a.Invoke(parameterList);
+                    }
                 }
             }
 

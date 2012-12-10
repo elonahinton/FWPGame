@@ -48,6 +48,9 @@ namespace FWPGame
         private SpriteFont broFont;
         private SpriteFont sisFont;
 
+        private const double INPUT_INTERVAL = 50;
+        private double lastInput = 0.0;
+
 
         public FWPGame()
         {
@@ -121,7 +124,7 @@ namespace FWPGame
             
 
             cursor = new Cursor(Content.Load<Texture2D>("cursor"), new Vector2(0,0), this, powers);
-            player = new Player(Content.Load<Texture2D>("UI/icon"), Content.Load<Texture2D>("UI/iconBG"), chiF, new Vector2(0, 0),
+            player = new Player(Content, Content.Load<Texture2D>("UI/icon"), Content.Load<Texture2D>("UI/iconBG"), chiF, new Vector2(0, 0),
                 new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), tempMapSize,
                 cursor, powers, availablePowers);
             
@@ -169,7 +172,7 @@ namespace FWPGame
                 this.Exit();
 
             // TODO: Add your update logic here
-            HandleInput();
+            HandleInput(gameTime.TotalGameTime.Milliseconds);
             Transmorg();
 
             map.Update(gameTime, worldScale);
@@ -180,12 +183,19 @@ namespace FWPGame
             base.Update(gameTime);
         }
 
-        private void HandleInput()
+        private void HandleInput(double elapsedTime)
         {
+            bool doMouseClicks = elapsedTime - lastInput > INPUT_INTERVAL;
+            if (elapsedTime < INPUT_INTERVAL)
+                doMouseClicks = true;
             if (this.IsActive == true)
             {
                 InputManager.ActKeyboard(Keyboard.GetState());
-                InputManager.ActMouse(Mouse.GetState());
+                InputManager.ActMouse(Mouse.GetState(), doMouseClicks);
+                if (doMouseClicks)
+                {
+                    lastInput = elapsedTime;
+                }
             }
         }
 

@@ -61,11 +61,19 @@ namespace FWPGame.Engine
         private Power mySelectedPower;
         private const int MAX_POWER_HOTKEYS = 10;
 
+        protected internal int myLevel;
+        protected internal int myXP;
+        protected internal int myXPtoNext;
+        protected internal int levelProgress;
+
+        private Texture2D myXPbar;
+        private Texture2D myXPblock;
+        private SpriteFont levelFont;
         private Texture2D myIcon;
         private Texture2D myIconBG;
         private SpriteFont myFont;
 
-        public Player(Texture2D icon, Texture2D iconBG, SpriteFont font, Vector2 mapPos, Vector2 screenSize,
+        public Player(ContentManager content, Texture2D icon, Texture2D iconBG, SpriteFont font, Vector2 mapPos, Vector2 screenSize,
             Vector2 mapSize, Cursor cursor, ArrayList powers, List<Power> avPowers)
         {
             myIconBG = iconBG;
@@ -79,6 +87,14 @@ namespace FWPGame.Engine
             myCursor = cursor;
             myScreenSize = screenSize;
             myVelocity = new Vector2(0, 0);
+
+            myXPbar = content.Load<Texture2D>("UI/xpbar");
+            myXPblock = content.Load<Texture2D>("UI/xp");
+            levelFont = content.Load<SpriteFont>("UI/LevelFont");
+            myLevel = 0;
+            myXP = 0;
+            myXPtoNext = 100;
+
             SetupInput();
         }
 
@@ -283,6 +299,42 @@ namespace FWPGame.Engine
                 iconPos.X += 129;
                 textPos.X += 129;
             }
+
+            #region Exp Bar
+
+            Vector2 barLoc = new Vector2((myScreenSize.X / 2) - (myXPbar.Width / 2), (iconPos.Y - myXPbar.Height - 10));
+            batch.Draw(myXPbar, barLoc, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
+
+            Vector2 blockLoc = new Vector2(barLoc.X + 3, barLoc.Y + 3);
+
+            for (int t = 0; t < levelProgress; t++)
+            {
+                float xOffset = blockLoc.X + (8 * t);
+                batch.Draw(myXPblock, new Vector2(xOffset, blockLoc.Y), null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
+            }
+
+            batch.Draw(myXPbar, barLoc, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
+
+            Vector2 levelLoc = new Vector2(barLoc.X + (myXPbar.Width / 2), barLoc.Y - 40);
+            batch.DrawString(levelFont, "" + myLevel, levelLoc, Color.Black);
+
+            #endregion
+
+
+        }
+
+        private int getLevelProgress()
+        {
+            double levelPercent = ((double)myXP / (double)myXPtoNext);
+            if (levelPercent >= 1.0)
+            {
+                myLevel += 1;
+                myXPtoNext += 10;
+                myXP = 0;
+                levelPercent = 0;
+            }
+
+            return (int)(levelPercent * 100);
         }
         
     }
