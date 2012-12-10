@@ -42,6 +42,15 @@ namespace FWPGame
         private SoundEffect mainMusic;
         private SoundEffectInstance mainMusicInstance;
 
+        private Introduction intro;
+
+        public Texture2D dadGod;
+        public Texture2D broGod;
+        public Texture2D sisGod;
+        private SpriteFont dadFont;
+        private SpriteFont broFont;
+        private SpriteFont sisFont;
+
 
         public FWPGame()
         {
@@ -73,6 +82,16 @@ namespace FWPGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             chiF = Content.Load<SpriteFont>("ChillerFont");
+
+            dadGod = Content.Load<Texture2D>("gods/DaddyGod");
+            broGod = Content.Load<Texture2D>("gods/BrotherGod");
+            sisGod = Content.Load<Texture2D>("gods/SisterGod");
+            
+            dadFont = Content.Load<SpriteFont>("gods/DaddyFont");
+            broFont = Content.Load<SpriteFont>("gods/BrotherFont");
+            sisFont = Content.Load<SpriteFont>("gods/SisterFont");
+
+            intro = new Introduction(this, Content.Load<Texture2D>("gods/DaddyGod"), new Vector2(0,0), new Vector2(0,0), dadFont);
 
             myGrass = new GrassSprite(Content.Load<Texture2D>("grass"),
                 new Vector2(0, 0), new Vector2(0, 0));
@@ -163,6 +182,7 @@ namespace FWPGame
 
             map.Update(gameTime, worldScale);
             cursor.Update(gameTime, worldScale);
+            intro.myState.Update(gameTime.TotalGameTime.Milliseconds, worldScale);
             //myApocalypse.Update(gameTime.TotalGameTime.Seconds, player.myMapPosition);
 
             base.Update(gameTime);
@@ -196,6 +216,7 @@ namespace FWPGame
             map.Draw(spriteBatch);
             player.Draw(spriteBatch);
             cursor.Draw(spriteBatch);
+            intro.Draw(spriteBatch);
             //myApocalypse.Draw(spriteBatch);
             spriteBatch.End();
 

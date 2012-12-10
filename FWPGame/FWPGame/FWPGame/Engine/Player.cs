@@ -176,7 +176,7 @@ namespace FWPGame.Engine
             #region Power Selection Hotkeys
 
             Keys[] possibleHotkeys = { Keys.D1, Keys.D2, Keys.D3, Keys.D4, Keys.D5, Keys.D6, Keys.D7, Keys.D8, Keys.D9, Keys.D0 };
-            for (int i = 0; i < myPowers.Count; i++)//MAX_POWER_HOTKEYS; i++)
+            for (int i = 0; i < MAX_POWER_HOTKEYS; i++)
             {
                 object[] param = new object[1];
                 param[0] = i;

@@ -80,6 +80,8 @@
     <Compile Include="Engine\InputManager.cs" />
     <Compile Include="Engine\MapTile.cs" />
     <Compile Include="Events\Apocalypse.cs" />
+    <Compile Include="Events\Introduction.cs" />
+    <Compile Include="Events\Scene.cs" />
     <Compile Include="Items\GrassSprite.cs" />
     <Compile Include="Engine\Map.cs" />
     <Compile Include="Engine\Player.cs" />
