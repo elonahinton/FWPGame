@@ -413,7 +413,7 @@ namespace FWPGame.Events
             {
                 String instructions = "Children, please!  It is time, to bring out the new world.\n" +
                                       "As you take on this task, you will learn more powers and \n" + 
-                                      "become more powerful Try every combination you can think of.\n" +
+                                      "become more powerful. Try every combination you can think of.\n" +
                                       "Use your powers on various objects and and use various combinations\n" +
                                       "of your powers to truly explore and build your land.\n" +
                                       "Now, it is time for you to receive your First World!\n\n\n" +

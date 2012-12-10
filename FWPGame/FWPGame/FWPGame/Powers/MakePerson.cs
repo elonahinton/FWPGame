@@ -51,6 +51,11 @@ namespace FWPGame.Powers
                 person = game.person.Clone();
                 tile.Add(person);
             }
+
+        public override void PowerCombo(MapTile tile, Power power2)
+        {
+            //not currently implemented
+        }
         }
 
     }

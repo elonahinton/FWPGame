@@ -107,7 +107,8 @@ namespace FWPGame
             powers.Add(fire);
             BuildHouse housePower = new BuildHouse(Content.Load<Texture2D>("UI/house_icon"), this, new Vector2(0, 0), new Vector2(0, 0));
             powers.Add(housePower);
-
+            Wind windPower = new Wind(Content.Load<Texture2D>("UI/windicon"), this, new Vector2(0,0), new Vector2(0,0));
+            powers.Add(windPower);
             //Protect protect = new Protect(Content.Load<Texture2D>("UI/protect"), this, new Vector2(0, 0), new Vector2(0, 0));
 
             Dictionary<string, Power> myPowers = new Dictionary<string, Power>();

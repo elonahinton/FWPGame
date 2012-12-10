@@ -30,7 +30,7 @@ namespace FWPGame.Powers
             tile.Add(game.myGrass.Clone());            
         }
 
-        public override void PowerCombo(Power power2, MouseState mState)
+        public override void PowerCombo(MapTile tile, Power power2)
         {
             //not currently implemented
         }

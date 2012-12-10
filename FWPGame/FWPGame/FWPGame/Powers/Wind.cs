@@ -12,13 +12,12 @@ using Microsoft.Xna.Framework.Media;
 using FWPGame.Engine;
 using FWPGame.Items;
 using System.Reflection;
-
 namespace FWPGame.Powers
 {
-    class Rain : Power
+    class Wind : Power
     {
-        public Rain(Texture2D icon, FWPGame aGame, Vector2 position, Vector2 mapPosition) :
-            base(icon, aGame, position, mapPosition)
+    public Wind(Texture2D icon, FWPGame aGame, Vector2 position, Vector2 mapPosition) :
+         base(icon, aGame, position, mapPosition)
         {
             game = aGame;
             myPosition = position;
@@ -27,8 +26,7 @@ namespace FWPGame.Powers
         }
 
         public override void Interact(MapTile tile)
-        {
-            tile.Add(game.motherWater.Clone());
+        {                 
         }
 
 

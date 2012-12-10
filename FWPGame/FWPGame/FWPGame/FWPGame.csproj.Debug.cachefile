@@ -3,6 +3,7 @@ Content\scenes.xnb
 Content\Gods\DaddyFont.xnb
 Content\Gods\BrotherFont.xnb
 Content\Gods\SisterFont.xnb
+Content\UI\LevelFont.xnb
 Content\cursor.xnb
 Content\Maps\Mars\marsorbit.xnb
 Content\grass.xnb
@@ -194,6 +195,5 @@ Content\UI\xpbar.xnb
 Content\Sound\mainMusic.xnb
 Content\Sound\space.xnb
 Content\Sound\fire.xnb
-Content\UI\LevelFont.xnb
 Content\Sound\space.wma
 Content\Sound\fire.wma

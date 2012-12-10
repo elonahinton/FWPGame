@@ -104,6 +104,7 @@
     <Compile Include="Powers\Protect.cs" />
     <Compile Include="Powers\Rain.cs" />
     <Compile Include="Powers\SproutTree.cs" />
+    <Compile Include="Powers\Wind.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="FWPGame.cs" />

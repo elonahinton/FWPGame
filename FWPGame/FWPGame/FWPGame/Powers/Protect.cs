@@ -60,7 +60,7 @@ namespace FWPGame.Powers
             }
         }
 
-        public override void PowerCombo(Power power2, MouseState mState)
+        public override void PowerCombo(MapTile tile, Power power2)
         {
             //not currently implemented
         }
