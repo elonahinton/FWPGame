@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using FWPGame.Engine;
 using FWPGame.Items;
 using System.Reflection;
+using System.Diagnostics;
 namespace FWPGame.Powers
 {
     class Wind : Power
@@ -32,7 +33,10 @@ namespace FWPGame.Powers
 
         public override void PowerCombo(MapTile tile, Power power2)
         {
-            //not currently implemented
+            if (power2.GetType().Name.Equals("Fire"))
+            {
+                Debug.WriteLine("power combo reached");
+            }
         }
     }
 }

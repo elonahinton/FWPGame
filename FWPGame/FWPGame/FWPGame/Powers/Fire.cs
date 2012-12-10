@@ -61,7 +61,10 @@ namespace FWPGame.Powers
 
         public override void PowerCombo(MapTile tile, Power power2)
         {
-            //not currently implemented
+            if (power2.GetType().Name.Equals("Wind"))
+            {
+                power2.PowerCombo(tile, this);
+            }
         }
     }
 }
