@@ -137,7 +137,6 @@ Content\Gods\DaddyFont.xnb
 Content\Gods\BrotherFont.xnb
 Content\Gods\SisterFont.xnb
 Content\UI\roadicon.xnb
-Content\road.xnb
 Content\Gods\DaddyGod.xnb
 Content\Gods\BrotherGod.xnb
 Content\Gods\SisterGod.xnb
@@ -172,5 +171,11 @@ Content\Wood\Fell\fell_1.xnb
 Content\Wood\Fell\fell_2.xnb
 Content\Wood\Fell\fell_3.xnb
 Content\Wood\Fell\fell_4.xnb
+Content\Infrastructure\road.xnb
+Content\Infrastructure\highway.xnb
+Content\Infrastructure\Village.xnb
+Content\Infrastructure\burntTown.xnb
+Content\Infrastructure\city.xnb
+Content\Infrastructure\dirtRoad.xnb
 Content\Sound\space.wma
 Content\Sound\fire.wma

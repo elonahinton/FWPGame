@@ -761,7 +761,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="road.png">
+    <Compile Include="Infrastructure\road.png">
       <Name>road</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -979,6 +979,41 @@
     </Compile>
     <Compile Include="Wood\Fell\fell_4.jpg">
       <Name>fell_4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure\highway.jpg">
+      <Name>highway</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure\Village.jpg">
+      <Name>Village</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure\burntTown.jpg">
+      <Name>burntTown</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure\city.jpg">
+      <Name>city</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure\dirtRoad.jpg">
+      <Name>dirtRoad</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

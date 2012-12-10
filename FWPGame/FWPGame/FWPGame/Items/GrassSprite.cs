@@ -21,21 +21,19 @@ namespace FWPGame.Items
             base(texture, position)
         {
             myMapPosition = mapPosition;
-            myTexture = texture;
-            myPosition = position;
+            
 			name = "GrassSprite";
+            myState = new RegularState(this);
         }
 
         public void setMyPosition(Vector2 pos)
         {
             myPosition = pos;
-            Debug.WriteLine("position is at: " + pos);
         }
 
         public void setMyMapPosition(Vector2 pos)
         {
             myMapPosition = pos;
-            Debug.WriteLine("map position is at: " + pos);
         }
 
         public GrassSprite Clone()
@@ -43,18 +41,38 @@ namespace FWPGame.Items
             return new GrassSprite(this.myTexture, new Vector2(0,0), new Vector2(0,0));
         }
 
-        public override void Update(GameTime gameTime, Vector2 playerMapPos)
-        {
-           // myPosition = myMapPosition - playerMapPos;
-        }
 
-        public override void Draw(SpriteBatch batch)
+        
+        // The Regular State
+        class RegularState : State
         {
-            batch.Draw(myTexture, myPosition,
-                    null, Color.White,
-                    myAngle, myOrigin, myScale,
-                    SpriteEffects.None, 0f);
-        }
+            private GrassSprite grass;
 
+            public RegularState(GrassSprite sprite)
+            {
+                grass = sprite;
+            }
+
+            // Determine whether this is a spreading conditition
+            public Sprite Spread()
+            {
+                //GrassSprite newGrass = grass.Clone();
+                //newGrass.myState = new RegularState(newGrass);
+                //return newGrass;
+                return null;
+            }
+
+            public void Update(double elapsedTime, Vector2 playerMapPos)
+            {
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                batch.Draw(grass.myTexture, grass.myPosition,
+                        null, Color.White,
+                        grass.myAngle, grass.myOrigin, grass.myScale,
+                        SpriteEffects.None, 0f);
+            }
+        }
     }
 }

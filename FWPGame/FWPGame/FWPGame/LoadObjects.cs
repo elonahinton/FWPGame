@@ -19,8 +19,10 @@ namespace FWPGame
 {
     public partial class FWPGame : Microsoft.Xna.Framework.Game
     {
+        protected internal GrassSprite myGrass;
+        protected internal Road myRoad;
         protected internal Water motherWater;
-        protected internal Wood motherWood;
+        public Wood motherWood;
         protected internal Tree motherTree;
         protected internal House motherHouse;
         protected internal Tornado motherTornado;
@@ -33,7 +35,9 @@ namespace FWPGame
         //
         protected void LoadObjects()
         {
-            
+            myGrass = new GrassSprite(Content.Load<Texture2D>("grass"),
+                new Vector2(0, 0), new Vector2(0, 0));
+
             // Create Water instance
             Texture2D[] rainingWater = {
                 Content.Load<Texture2D>("raining/rain_0"),
@@ -61,7 +65,7 @@ namespace FWPGame
             };
             motherWater = new Water(Content.Load<Texture2D>("water"), new Vector2(0, 0), new Vector2(0, 0), rainingWater);
  
-            // Create a Tree instance
+            // Create a Tree (& Wood) instance
             Texture2D[] burningSequence = {
                 Content.Load<Texture2D>("burning/burn_0"),
                 Content.Load<Texture2D>("burning/burn_1"),
@@ -144,8 +148,6 @@ namespace FWPGame
                 Content.Load<Texture2D>("tree/squirrelplant/planttree_66"),
                 Content.Load<Texture2D>("tree/squirrelplant/planttree_67")
             };
-            motherTree = new Tree(Content.Load<Texture2D>("tree/tree"), new Vector2(0, 0), new Vector2(0, 0),
-                burningSequence, Content.Load<Texture2D>("tree/burntTree"), Content.Load<Texture2D>("tree/burntTree"), multiplyTree);
 
             // Create Wood instance
             Texture2D[] fellTree = {
@@ -157,9 +159,21 @@ namespace FWPGame
             };
             motherWood = new Wood(Content.Load<Texture2D>("wood/logs"), new Vector2(0, 0), new Vector2(0, 0),
                 fellTree, burningSequence, Content.Load<Texture2D>("wood/logsBurnt"));
+            motherTree = new Tree(Content.Load<Texture2D>("tree/tree"), new Vector2(0, 0), new Vector2(0, 0),
+                burningSequence, Content.Load<Texture2D>("tree/burntTree"), Content.Load<Texture2D>("tree/burntTree"),
+                multiplyTree, motherWood);
+
+            myRoad = new Road(Content.Load<Texture2D>("infrastructure/dirtRoad"),
+                new Vector2(0, 0), new Vector2(0, 0), burningSequence,
+                Content.Load<Texture2D>("infrastructure/burntTown"),
+                Content.Load<Texture2D>("infrastructure/highway"),
+                Content.Load<Texture2D>("infrastructure/village"),
+                Content.Load<Texture2D>("infrastructure/city")
+                );
 
 
-            person = new People(Content.Load<Texture2D>("people/person"), new Vector2(0,0), new Vector2(0,0), null, Content.Load<Texture2D>("people/humanBurn"), Content.Load<Texture2D>("people/electrocute/electrocute_7"));
+            person = new People(Content.Load<Texture2D>("people/person"), new Vector2(0,0), new Vector2(0,0), null,
+                Content.Load<Texture2D>("people/humanBurn"), Content.Load<Texture2D>("people/electrocute/electrocute_7"));
 
 
             // Create a House instance
@@ -243,7 +257,7 @@ namespace FWPGame
                     for (int s = 0; s < mapTiles[i, j].mySprites.Count; ++s)
                     {
                         //  Randomize the selected tiles on the map
-                        if (decision.NextDouble() > 0.4)
+                        if (decision.NextDouble() > 0.3)
                         {
                             continue;
                         }
@@ -271,20 +285,37 @@ namespace FWPGame
                                 x = i - (int)Math.Round(decision.NextDouble());
                                 y = j + (int)Math.Round(decision.NextDouble());
                             }
-                            
-                            
-                            // Only spread to empty tiles or tiles of the same name
+
+                            // Make sure we have a valid tile
                             map.SpreadTile(ref x, ref y);
-                            if (mapTiles[x, y].mySprites.Count == 0  ||
-                                mapTiles[i, j].mySprites[s].name.Equals(mapTiles[x, y].mySprites[0].name))
+
+                            // If this is road, they get upgraded in place in development
+                            if (newSprite.name.Equals("Road"))
+                            {
+                                mapTiles[i, j].Add(newSprite);
+                                //  Don't spread roads, highways, villages too much
+                                if (decision.NextDouble() < 0.4)
+                                {
+                                    continue;
+                                }
+                            }
+
+                            // Only spread to empty tile
+                            if (mapTiles[x, y].mySprites.Count == 0)
                             {
                                 mapTiles[x, y].Add(myGrass.Clone());
                                 mapTiles[x, y].Add(newSprite);
                             }
+
+
                             // If this is people, they do random development
                             if (newSprite.name.Equals("People"))
                             {
-                            //    mapTiles[x, y].getHuman();
+                                Sprite develop = mapTiles[x, y].mySprites[s].Interact();
+                                if (develop != null)
+                                {
+                                    mapTiles[x, y].Add(develop);
+                                }
                             }
                             
                         }

@@ -45,6 +45,13 @@ namespace FWPGame
             myPosition = position;
         }
 
+        // Determine whether this is a human development conditition
+        public virtual Sprite Interact()
+        {
+            // The default behavior
+            return null;
+        }
+
         // Determine whether this is a spreading conditition
         public Sprite Spread()
         {

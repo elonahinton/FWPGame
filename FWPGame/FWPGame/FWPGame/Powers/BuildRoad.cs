@@ -26,6 +26,7 @@ namespace FWPGame.Powers
 
         public override void Interact(MapTile tile)
         {
+            tile.Clear();
             tile.Add(game.myRoad.Clone());
         }
 

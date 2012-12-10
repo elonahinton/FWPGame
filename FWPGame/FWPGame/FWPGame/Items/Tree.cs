@@ -25,12 +25,13 @@ namespace FWPGame.Items
         private Texture2D myElectrocute;
         private Texture2D[] myMultiplySequence;
         private Animate myMultiply;
+        private Wood myWood;
 
 
         public Tree(Texture2D texture, Vector2 position,
             Vector2 mapPosition, Texture2D[] burningSequence,
             Texture2D burnt, Texture2D electrocute,
-            Texture2D[] multiplyTree) :
+            Texture2D[] multiplyTree, Wood wood) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
@@ -43,6 +44,7 @@ namespace FWPGame.Items
             myMultiplySequence = multiplyTree;
             myMultiply = new Animate(multiplyTree);
             SetUpMultiply();
+            myWood = wood;
             myState = new RegularState(this);
         }
 
@@ -50,7 +52,7 @@ namespace FWPGame.Items
         public Tree Clone()
         {
             return new Tree(this.myTexture, new Vector2(0, 0), new Vector2(0, 0),
-                myBurningSequence, myBurnt, myElectrocute, myMultiplySequence);
+                myBurningSequence, myBurnt, myElectrocute, myMultiplySequence, myWood);
         }
 
 
@@ -111,6 +113,11 @@ namespace FWPGame.Items
             }
         }
 
+
+        public override Sprite Interact()
+        {
+            return myWood.Clone();
+        }
 
 
         // The Regular State

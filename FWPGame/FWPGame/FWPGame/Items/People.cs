@@ -130,7 +130,7 @@ namespace FWPGame.Items
                     goRight = false;
                     goDown = true;
                 }
-                else
+                else if (goDown)
                 {
                     goDown = false;
                     goLeft = true;

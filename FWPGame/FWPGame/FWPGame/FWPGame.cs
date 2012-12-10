@@ -29,8 +29,6 @@ namespace FWPGame
         private Vector2 FontPos;
         public Map map;
 
-        public GrassSprite myGrass;
-        public Road myRoad;
         public Player player;
         private Cursor cursor;
         private Vector2 tempMapSize = new Vector2(1200, 1200);
@@ -92,10 +90,7 @@ namespace FWPGame
 
             intro = new Introduction(this, Content.Load<Texture2D>("gods/DaddyGod"), new Vector2(0,0), new Vector2(0,0), dadFont);
 
-            myGrass = new GrassSprite(Content.Load<Texture2D>("grass"),
-                new Vector2(0, 0), new Vector2(0, 0));
-            myRoad = new Road(Content.Load<Texture2D>("road"),
-                new Vector2(0, 0), new Vector2(0, 0));
+            
             //Kill the game with Escape
             GameAction closeGame = new GameAction(this, this.GetType().GetMethod("ExitGame"), new object[0]);
             InputManager.AddToKeyboardMap(Keys.Escape, closeGame);
