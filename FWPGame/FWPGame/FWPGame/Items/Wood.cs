@@ -18,10 +18,14 @@ namespace FWPGame.Items
     public class Wood : Sprite
     {
         private Texture2D[] myAnimateSequence;
+        private Texture2D[] myBurningSequence;
         private Animate myAnimate;
+        private Animate myBurning;
         private Texture2D myBurnt;
 
-        public Wood(Texture2D texture, Vector2 position, Vector2 mapPosition, Texture2D[] animateSequence, Texture2D burnt) :
+        public Wood(Texture2D texture, Vector2 position,
+        Vector2 mapPosition, Texture2D[] animateSequence,
+        Texture2D[] burningSequence, Texture2D burnt) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
@@ -29,13 +33,18 @@ namespace FWPGame.Items
             myAnimateSequence = animateSequence;
             myAnimate = new Animate(animateSequence);
             SetUpAnimate();
+
+            myBurningSequence = burningSequence;
+            myBurning = new Animate(burningSequence);
+            SetUpBurning();
             myBurnt = burnt;
             myState = new RegularState(this);
         }
 
         public Wood Clone()
         {
-            return new Wood(this.myTexture, new Vector2(0, 0), new Vector2(0, 0), myAnimateSequence, myBurnt);
+            return new Wood(this.myTexture, new Vector2(0, 0), new Vector2(0, 0), 
+                myAnimateSequence, myBurningSequence, myBurnt);
         }
 
 
@@ -58,24 +67,19 @@ namespace FWPGame.Items
         public void SetUpAnimate()
         {
             // Prepare the flip book sequence for expected Animate
-            myAnimate.AddFrame(0, 100);
-            myAnimate.AddFrame(1, 50);
-            myAnimate.AddFrame(0, 100);
-            myAnimate.AddFrame(2, 50);
-            myAnimate.AddFrame(0, 100);
-            myAnimate.AddFrame(3, 50);
-            myAnimate.AddFrame(0, 100);
-            myAnimate.AddFrame(4, 50);
-            myAnimate.AddFrame(0, 100);
-            myAnimate.AddFrame(5, 50);
-            myAnimate.AddFrame(0, 100);
-            myAnimate.AddFrame(6, 50);
-            myAnimate.AddFrame(0, 100);
-            myAnimate.AddFrame(7, 50);
-            myAnimate.AddFrame(0, 100);
-            myAnimate.AddFrame(8, 50);
-            myAnimate.AddFrame(0, 100);
-            myAnimate.AddFrame(9, 50);
+            for (int j = 0; j < 3; ++j)
+            {
+                for (int i = 0; i < 6; ++i)
+                {
+                    myAnimate.AddFrame(i, 2000);
+                }
+            }
+        }
+
+
+        public void SetUpBurning()
+        {
+            // Prepare the flip book sequence for expected Animate
         }
 
 
@@ -92,7 +96,9 @@ namespace FWPGame.Items
             // Determine whether this is a spreading conditition
             public Sprite Spread()
             {
-                return null;
+                Wood newWood = wood.Clone();
+                newWood.myState = new RegularState(newWood);
+                return newWood;
             }
 
             public void Update(double elapsedTime, Vector2 playerMapPos)
@@ -104,12 +110,51 @@ namespace FWPGame.Items
             public void Draw(SpriteBatch batch)
             {
                 batch.Draw(wood.myTexture, wood.myPosition,
-                        null, Color.White,
-                        wood.myAngle, wood.myOrigin, wood.myScale,
-                        SpriteEffects.None, 0f);
+                    null, Color.White,
+                    wood.myAngle, wood.myOrigin, wood.myScale,
+                    SpriteEffects.None, 0f);
             }
 
         }
+
+
+        // The Cutting State
+        class CuttingState : State
+        {
+            private Wood wood;
+
+            public CuttingState(Wood sprite)
+            {
+                wood = sprite;
+            }
+
+            // Determine whether this is a spreading conditition
+            public Sprite Spread()
+            {
+                Wood newWood = wood.Clone();
+                newWood.myState = new CuttingState(newWood);
+                return newWood;
+            }
+
+            public void Update(double elapsedTime, Vector2 playerMapPos)
+            {
+                bool seqDone = false;
+                wood.myAnimate.Update(elapsedTime, ref seqDone);
+                if (seqDone)
+                {
+                    wood.myState = new RegularState(wood);
+                }
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                batch.Draw(wood.myAnimate.GetImage(), wood.myPosition,
+                    null, Color.White, wood.myAngle,
+                    wood.myOrigin, wood.myScale,
+                    SpriteEffects.None, 0f);
+            }
+        }
+
 
         // The Burning State
         class BurningState : State
@@ -124,13 +169,15 @@ namespace FWPGame.Items
             // Determine whether this is a spreading conditition
             public Sprite Spread()
             {
-                return null;
+                Wood newWood = wood.Clone();
+                newWood.myState = new BurningState(newWood);
+                return newWood;
             }
 
             public void Update(double elapsedTime, Vector2 playerMapPos)
             {
                 bool seqDone = false;
-                wood.myAnimate.Update(elapsedTime, ref seqDone);
+                wood.myBurning.Update(elapsedTime, ref seqDone);
                 if (seqDone)
                 {
                     wood.myState = new BurntState(wood);
@@ -139,11 +186,13 @@ namespace FWPGame.Items
 
             public void Draw(SpriteBatch batch)
             {
-                batch.Draw(wood.myAnimate.GetImage(), wood.myPosition, null, Color.White, wood.myAngle,
-                        wood.myOrigin, wood.myScale,
-                        SpriteEffects.None, 0f);
+                batch.Draw(wood.myBurning.GetImage(), wood.myPosition,
+                    null, Color.White, wood.myAngle,
+                    wood.myOrigin, wood.myScale,
+                    SpriteEffects.None, 0f);
             }
         }
+
 
         // The Burnt State
         class BurntState : State
@@ -158,7 +207,9 @@ namespace FWPGame.Items
             // Determine whether this is a spreading conditition
             public Sprite Spread()
             {
-                return null;
+                Wood newWood = wood.Clone();
+                newWood.myState = new BurningState(newWood);
+                return newWood;
             }
 
             public void Update(double elapsedTime, Vector2 playerMapPos)
@@ -172,7 +223,6 @@ namespace FWPGame.Items
                     wood.myAngle, wood.myOrigin, wood.myScale,
                     SpriteEffects.None, 0f);
             }
-
         }
     }
 }

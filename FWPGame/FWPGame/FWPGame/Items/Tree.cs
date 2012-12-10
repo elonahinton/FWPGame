@@ -27,8 +27,10 @@ namespace FWPGame.Items
         private Animate myMultiply;
 
 
-        public Tree(Texture2D texture, Vector2 position, Vector2 mapPosition,
-            Texture2D[] burningSequence, Texture2D burnt, Texture2D electrocute, Texture2D[] multiplyTree) :
+        public Tree(Texture2D texture, Vector2 position,
+            Vector2 mapPosition, Texture2D[] burningSequence,
+            Texture2D burnt, Texture2D electrocute,
+            Texture2D[] multiplyTree) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
@@ -131,15 +133,14 @@ namespace FWPGame.Items
 
             public void Update(double elapsedTime, Vector2 playerMapPos)
             {
-              
             }
 
             public void Draw(SpriteBatch batch)
-            {              
+            {
                 batch.Draw(tree.myTexture, tree.myPosition,
-                        null, Color.White,
-                        tree.myAngle, tree.myOrigin, tree.myScale,
-                        SpriteEffects.None, 0f);
+                    null, Color.White,
+                    tree.myAngle, tree.myOrigin, tree.myScale,
+                    SpriteEffects.None, 0f);
             }
         }
 
@@ -168,7 +169,7 @@ namespace FWPGame.Items
             {
                 bool seqDone = false;
                 tree.myBurning.Update(elapsedTime, ref seqDone);
-                
+
                 if (seqDone)
                 {
                     tree.myState = new BurntState(tree);
@@ -179,7 +180,7 @@ namespace FWPGame.Items
             {
                 batch.Draw(tree.myBurning.GetImage(), tree.myPosition, null, Color.White, tree.myAngle,
                         tree.myOrigin, tree.myScale,
-                        SpriteEffects.None, 0f); 
+                        SpriteEffects.None, 0f);
             }
         }
 
@@ -267,7 +268,7 @@ namespace FWPGame.Items
             public void Update(double elapsedTime, Vector2 playerMapPos)
             {
                 bool seqDone = false;
-                
+
                 tree.myMultiply.Update(elapsedTime, ref seqDone);
                 if (seqDone)
                 {

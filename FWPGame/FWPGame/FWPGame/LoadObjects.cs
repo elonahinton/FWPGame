@@ -20,6 +20,7 @@ namespace FWPGame
     public partial class FWPGame : Microsoft.Xna.Framework.Game
     {
         protected internal Water motherWater;
+        protected internal Wood motherWood;
         protected internal Tree motherTree;
         protected internal House motherHouse;
         protected internal Tornado motherTornado;
@@ -31,7 +32,8 @@ namespace FWPGame
 
         //
         protected void LoadObjects()
-        { 
+        {
+            
             // Create Water instance
             Texture2D[] rainingWater = {
                 Content.Load<Texture2D>("raining/rain_0"),
@@ -60,7 +62,7 @@ namespace FWPGame
             motherWater = new Water(Content.Load<Texture2D>("water"), new Vector2(0, 0), new Vector2(0, 0), rainingWater);
  
             // Create a Tree instance
-            Texture2D[] burnTreeSequence = {
+            Texture2D[] burningSequence = {
                 Content.Load<Texture2D>("burning/burn_0"),
                 Content.Load<Texture2D>("burning/burn_1"),
                 Content.Load<Texture2D>("burning/burn_2"),
@@ -143,7 +145,19 @@ namespace FWPGame
                 Content.Load<Texture2D>("tree/squirrelplant/planttree_67")
             };
             motherTree = new Tree(Content.Load<Texture2D>("tree/tree"), new Vector2(0, 0), new Vector2(0, 0),
-                burnTreeSequence, Content.Load<Texture2D>("tree/burntTree"), Content.Load<Texture2D>("tree/burntTree"), multiplyTree);
+                burningSequence, Content.Load<Texture2D>("tree/burntTree"), Content.Load<Texture2D>("tree/burntTree"), multiplyTree);
+
+            // Create Wood instance
+            Texture2D[] fellTree = {
+                Content.Load<Texture2D>("wood/fell/fell_0"),
+                Content.Load<Texture2D>("wood/fell/fell_1"),
+                Content.Load<Texture2D>("wood/fell/fell_2"),
+                Content.Load<Texture2D>("wood/fell/fell_3"),
+                Content.Load<Texture2D>("wood/fell/fell_4")
+            };
+            motherWood = new Wood(Content.Load<Texture2D>("wood/logs"), new Vector2(0, 0), new Vector2(0, 0),
+                fellTree, burningSequence, Content.Load<Texture2D>("wood/logsBurnt"));
+
 
             person = new People(Content.Load<Texture2D>("people/person"), new Vector2(0,0), new Vector2(0,0), null, Content.Load<Texture2D>("people/humanBurn"), Content.Load<Texture2D>("people/electrocute/electrocute_7"));
 
@@ -163,7 +177,7 @@ namespace FWPGame
                 Content.Load<Texture2D>("burning/burn_9")
             };
             motherHouse = new House(Content.Load<Texture2D>("house/house"), new Vector2(0, 0), new Vector2(0, 0),
-                                burnHouseSequence, Content.Load<Texture2D>("house/houseBurnt"), Content.Load<Texture2D>("house/houseLit"));
+                burnHouseSequence, Content.Load<Texture2D>("house/houseBurnt"), Content.Load<Texture2D>("house/houseLit"));
 
             Texture2D[] spinTornadoSequence = {
                 Content.Load<Texture2D>("Tornado/tor_00"),
@@ -221,12 +235,14 @@ namespace FWPGame
                 }
                 for (int j = 0; j < mapTiles.GetLength(1); ++j)
                 {
+                    //  Randomize the frequency of spreading
                     if (decision.NextDouble() > 0.45)
                     {
                         continue;
                     }
                     for (int s = 0; s < mapTiles[i, j].mySprites.Count; ++s)
                     {
+                        //  Randomize the selected tiles on the map
                         if (decision.NextDouble() > 0.4)
                         {
                             continue;
@@ -234,6 +250,7 @@ namespace FWPGame
                         Sprite newSprite = mapTiles[i, j].mySprites[s].Spread();
                         if (newSprite != null)
                         {
+                            // Randomly choose an adjacent tile
                             if (decision.NextDouble() < 0.5)
                             {
                                 x = i + (int)Math.Round(decision.NextDouble());
@@ -256,6 +273,7 @@ namespace FWPGame
                             }
                             
                             
+                            // Only spread to empty tiles or tiles of the same name
                             map.SpreadTile(ref x, ref y);
                             if (mapTiles[x, y].mySprites.Count == 0  ||
                                 mapTiles[i, j].mySprites[s].name.Equals(mapTiles[x, y].mySprites[0].name))
@@ -263,7 +281,11 @@ namespace FWPGame
                                 mapTiles[x, y].Add(myGrass.Clone());
                                 mapTiles[x, y].Add(newSprite);
                             }
-                            
+                            // If this is people, they do random development
+                            if (newSprite.name.Equals("People"))
+                            {
+                            //    mapTiles[x, y].getHuman();
+                            }
                             
                         }
                     }
