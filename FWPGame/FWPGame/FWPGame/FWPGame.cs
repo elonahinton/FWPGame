@@ -121,10 +121,10 @@ namespace FWPGame
             //availablePowers.Add(protect);
             
 
-            cursor = new Cursor(Content.Load<Texture2D>("cursor"), new Vector2(0,0), this, powers);
-            player = new Player(Content, Content.Load<Texture2D>("UI/icon"), Content.Load<Texture2D>("UI/iconBG"), chiF, new Vector2(0, 0),
-                new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), tempMapSize,
-                cursor, powers, availablePowers);
+            cursor = new Cursor(Content.Load<Texture2D>("cursor"), new Vector2(0,0), this);
+            player = new Player(Content, new Vector2(0, 0),
+                new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height),
+                cursor, powers);
             
 
             map = new Map(Content.Load<Texture2D>("Maps/Mars/marsorbit"),

@@ -73,21 +73,18 @@ namespace FWPGame.Engine
         private Texture2D myIconBG;
         private SpriteFont myFont;
 
-        public Player(ContentManager content, Texture2D icon, Texture2D iconBG, SpriteFont font, Vector2 mapPos, Vector2 screenSize,
-            Vector2 mapSize, Cursor cursor, ArrayList powers, List<Power> avPowers)
+        public Player(ContentManager content, Vector2 mapPos, Vector2 screenSize, Cursor cursor, ArrayList powers)
         {
-            myIconBG = iconBG;
-            availablePowers = avPowers;
             mySelectedPower = (Power)powers[0];
-            myIcon = icon;
-            myFont = font;
             myPowers = powers;
             myMapPosition = mapPos;
-            myMapSize = mapSize;
             myCursor = cursor;
             myScreenSize = screenSize;
             myVelocity = new Vector2(0, 0);
 
+            myIcon = content.Load<Texture2D>("UI/icon");
+            myIconBG = content.Load<Texture2D>("UI/iconBG");
+            myFont = content.Load<SpriteFont>("ChillerFont");
             myXPbar = content.Load<Texture2D>("UI/xpbar");
             myXPblock = content.Load<Texture2D>("UI/xp");
             levelFont = content.Load<SpriteFont>("UI/LevelFont");
