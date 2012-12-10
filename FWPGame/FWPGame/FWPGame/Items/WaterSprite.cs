@@ -10,50 +10,140 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
+using FWPGame.Engine;
+using FWPGame.Powers;
 using System.Collections;
 using System.Diagnostics;
 
+
 namespace FWPGame.Items
 {
-    public class WaterSprite : Sprite
+    public class Water : Sprite
     {
-         public WaterSprite(Texture2D texture, Vector2 position, Vector2 mapPosition) :
+        private Texture2D[] myRainingSequence;
+        private Animate myRaining;
+
+        public Water(Texture2D texture, Vector2 position, Vector2
+            mapPosition, Texture2D[] rainingSequence) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
-            myTexture = texture;
-            myPosition = position;
-			name = "WaterSprite";
+            name = "WaterSprite";
+            myRainingSequence = rainingSequence;
+            myRaining = new Animate(rainingSequence);
+            SetUpRaining();
+            myState = new RainingState(this);
         }
 
-         public void setMyPosition(Vector2 pos)
-         {
-             myPosition = pos;
-             Debug.WriteLine("position is at: " + pos);
-         }
 
-         public void setMyMapPosition(Vector2 pos)
-         {
-             myMapPosition = pos;
-             Debug.WriteLine("map position is at: " + pos);
-         }
+        public Water Clone()
+        {
+            return new Water(this.myTexture, new Vector2(0, 0),
+                new Vector2(0, 0), myRainingSequence);
+        }
 
-         public WaterSprite Clone()
-         {
-             return new WaterSprite(this.myTexture, new Vector2(0, 0), new Vector2(0, 0));
-         }
 
-         public override void Update(GameTime gameTime, Vector2 playerMapPos)
-         {
-             //intentionally empty
-         }
+        public void rain()
+        {
+            myState = new RainingState(this);
+        }
 
-         public override void Draw(SpriteBatch batch)
-         {
-             batch.Draw(myTexture, myPosition,
-                     null, Color.White,
-                     myAngle, myOrigin, myScale,
-                     SpriteEffects.None, 0f);
-         }
+
+        public void setMyPosition(Vector2 pos)
+        {
+            myPosition = pos;
+        }
+
+
+        public void setMyMapPosition(Vector2 pos)
+        {
+            myMapPosition = pos;
+        }
+
+
+        public void SetUpRaining()
+        {
+            // Prepare the flip book sequence for expected Animate
+            for (int j = 0; j < 3; ++j)
+            {
+                for (int i = 0; i < 22; ++i)
+                {
+                    myRaining.AddFrame(i, 2000);
+                }
+            }
+        }
+
+
+
+        // The Raining State
+        class RainingState : State
+        {
+            private Water water;
+
+            public RainingState(Water sprite)
+            {
+                water = sprite;
+            }
+
+
+            // Determine whether this is a spreading conditition
+            public Sprite Spread()
+            {
+                Water newWater = water.Clone();
+                newWater.myState = new RainingState(newWater);
+                return newWater;
+            }
+
+            public void Update(double elapsedTime, Vector2 playerMapPos)
+            {
+                bool seqDone = false;
+                water.myRaining.Update(elapsedTime, ref seqDone);
+
+                if (seqDone)
+                {
+                    water.myState = new SeaState(water);
+                }
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                batch.Draw(water.myRaining.GetImage(), water.myPosition, null, Color.White, water.myAngle,
+                        water.myOrigin, water.myScale,
+                        SpriteEffects.None, 0f);
+            }
+        }
+
+
+
+        // The Sea State
+        class SeaState : State
+        {
+            private Water water;
+
+            public SeaState(Water sprite)
+            {
+                water = sprite;
+            }
+
+            // Determine whether this is a spreading conditition
+            public Sprite Spread()
+            {
+                Water newWater = water.Clone();
+                newWater.myState = new RainingState(newWater);
+                return newWater;
+            }
+
+            public void Update(double elapsedTime, Vector2 playerMapPos)
+            {
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                batch.Draw(water.myTexture, water.myPosition,
+                    null, Color.White,
+                    water.myAngle, water.myOrigin, water.myScale,
+                    SpriteEffects.None, 0f);
+            }
+        }
     }
 }

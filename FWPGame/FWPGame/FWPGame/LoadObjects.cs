@@ -19,6 +19,7 @@ namespace FWPGame
 {
     public partial class FWPGame : Microsoft.Xna.Framework.Game
     {
+        protected internal Water motherWater;
         protected internal Tree motherTree;
         protected internal House motherHouse;
         protected internal Tornado motherTornado;
@@ -30,7 +31,34 @@ namespace FWPGame
 
         //
         protected void LoadObjects()
-        {            
+        { 
+            // Create Water instance
+            Texture2D[] rainingWater = {
+                Content.Load<Texture2D>("raining/rain_0"),
+                Content.Load<Texture2D>("raining/rain_1"),
+                Content.Load<Texture2D>("raining/rain_2"),
+                Content.Load<Texture2D>("raining/rain_3"),
+                Content.Load<Texture2D>("raining/rain_4"),
+                Content.Load<Texture2D>("raining/rain_5"),
+                Content.Load<Texture2D>("raining/rain_6"),
+                Content.Load<Texture2D>("raining/rain_7"),
+                Content.Load<Texture2D>("raining/rain_8"),
+                Content.Load<Texture2D>("raining/rain_9"),
+                Content.Load<Texture2D>("raining/rain_10"),
+                Content.Load<Texture2D>("raining/rain_11"),
+                Content.Load<Texture2D>("raining/rain_12"),
+                Content.Load<Texture2D>("raining/rain_13"),
+                Content.Load<Texture2D>("raining/rain_14"),
+                Content.Load<Texture2D>("raining/rain_15"),
+                Content.Load<Texture2D>("raining/rain_16"),
+                Content.Load<Texture2D>("raining/rain_17"),
+                Content.Load<Texture2D>("raining/rain_18"),
+                Content.Load<Texture2D>("raining/rain_19"),
+                Content.Load<Texture2D>("raining/rain_20"),
+                Content.Load<Texture2D>("raining/rain_21")
+            };
+            motherWater = new Water(Content.Load<Texture2D>("water"), new Vector2(0, 0), new Vector2(0, 0), rainingWater);
+ 
             // Create a Tree instance
             Texture2D[] burnTreeSequence = {
                 Content.Load<Texture2D>("burning/burn_0"),

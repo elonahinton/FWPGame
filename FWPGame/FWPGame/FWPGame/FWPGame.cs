@@ -30,7 +30,6 @@ namespace FWPGame
         public Map map;
 
         public GrassSprite myGrass;
-        public WaterSprite myWater;
         public Road myRoad;
         public Player player;
         private Cursor cursor;
@@ -94,8 +93,6 @@ namespace FWPGame
             intro = new Introduction(this, Content.Load<Texture2D>("gods/DaddyGod"), new Vector2(0,0), new Vector2(0,0), dadFont);
 
             myGrass = new GrassSprite(Content.Load<Texture2D>("grass"),
-                new Vector2(0, 0), new Vector2(0, 0));
-            myWater = new WaterSprite(Content.Load<Texture2D>("water"), 
                 new Vector2(0, 0), new Vector2(0, 0));
             myRoad = new Road(Content.Load<Texture2D>("road"),
                 new Vector2(0, 0), new Vector2(0, 0));

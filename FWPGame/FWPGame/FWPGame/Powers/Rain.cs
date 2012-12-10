@@ -27,7 +27,7 @@ namespace FWPGame.Powers
 
         public override void Interact(MapTile tile)
         {
-            tile.Add(game.myWater.Clone());
+            tile.Add(game.motherWater.Clone());
         }
 
 
