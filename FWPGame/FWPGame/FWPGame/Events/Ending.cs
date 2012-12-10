@@ -16,7 +16,7 @@ using FWPGame.Engine;
 
 namespace FWPGame.Events
 {
-    class Ending : Sprite
+    public class Ending : Sprite
     {
         private FWPGame game;
         private bool nextState;
