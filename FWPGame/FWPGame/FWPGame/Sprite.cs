@@ -45,6 +45,12 @@ namespace FWPGame
             myPosition = position;
         }
 
+
+        // Default is to do nothing
+        public virtual void burn()
+        {
+        }
+
         // Determine whether this is a human development conditition
         public virtual Sprite Interact()
         {

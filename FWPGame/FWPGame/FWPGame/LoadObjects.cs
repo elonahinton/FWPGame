@@ -300,7 +300,7 @@ namespace FWPGame
                                 }
                             }
 
-                            // Only spread to empty tile
+                            // Only spread to an empty tile
                             if (mapTiles[x, y].mySprites.Count == 0)
                             {
                                 mapTiles[x, y].Add(myGrass.Clone());
@@ -309,9 +309,10 @@ namespace FWPGame
 
 
                             // If this is people, they do random development
-                            if (newSprite.name.Equals("People"))
+                             else if (newSprite.name.Equals("People"))
                             {
-                                Sprite develop = mapTiles[x, y].mySprites[s].Interact();
+                                int top = mapTiles[x, y].mySprites.Count - 1;
+                                Sprite develop = mapTiles[x, y].mySprites[top].Interact();
                                 if (develop != null)
                                 {
                                     mapTiles[x, y].Add(develop);

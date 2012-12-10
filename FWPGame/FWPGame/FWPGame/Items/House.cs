@@ -42,7 +42,7 @@ namespace FWPGame.Items
         }
 
 
-        public void burn()
+        public override void burn()
         {
             myState = new BurningState(this);
         }

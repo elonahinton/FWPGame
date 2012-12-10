@@ -43,7 +43,7 @@ namespace FWPGame.Items
         }
 
 
-        public void burn()
+        public override void burn()
         {
             myState = new BurningState(this);
         }
@@ -109,7 +109,9 @@ namespace FWPGame.Items
             // Determine whether this is a spreading conditition
             public Sprite Spread()
             {
-                return null;
+                People newPeople = people.Clone();
+                newPeople.myState = new RegularState(newPeople);
+                return newPeople;
             }
             
             public void changeDirection()

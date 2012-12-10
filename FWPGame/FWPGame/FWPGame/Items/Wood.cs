@@ -29,6 +29,7 @@ namespace FWPGame.Items
             base(texture, position)
         {
             myMapPosition = mapPosition;
+            name = "Wood";
 
             myAnimateSequence = animateSequence;
             myAnimate = new Animate(animateSequence);
@@ -38,7 +39,8 @@ namespace FWPGame.Items
             myBurning = new Animate(burningSequence);
             SetUpBurning();
             myBurnt = burnt;
-            myState = new RegularState(this);
+
+            myState = new CuttingState(this);
         }
 
         public Wood Clone()
@@ -48,7 +50,7 @@ namespace FWPGame.Items
         }
 
 
-        public void burn()
+        public override void burn()
         {
             myState = new BurningState(this);
         }
@@ -67,11 +69,11 @@ namespace FWPGame.Items
         public void SetUpAnimate()
         {
             // Prepare the flip book sequence for expected Animate
-            for (int j = 0; j < 3; ++j)
+            for (int j = 0; j < 7; ++j)
             {
-                for (int i = 0; i < 6; ++i)
+                for (int i = 0; i < 5; ++i)
                 {
-                    myAnimate.AddFrame(i, 2000);
+                    myAnimate.AddFrame(i, 5000);
                 }
             }
         }
@@ -80,6 +82,26 @@ namespace FWPGame.Items
         public void SetUpBurning()
         {
             // Prepare the flip book sequence for expected Animate
+            myBurning.AddFrame(0, 1000);
+            myBurning.AddFrame(1, 3000);
+            myBurning.AddFrame(2, 2000);
+            myBurning.AddFrame(3, 2500);
+            myBurning.AddFrame(4, 1500);
+            myBurning.AddFrame(5, 900);
+            myBurning.AddFrame(8, 1100);
+            myBurning.AddFrame(9, 3500);
+            myBurning.AddFrame(6, 3100);
+            myBurning.AddFrame(7, 2000);
+            myBurning.AddFrame(8, 1100);
+            myBurning.AddFrame(3, 2500);
+            myBurning.AddFrame(4, 1500);
+            myBurning.AddFrame(5, 900);
+            myBurning.AddFrame(6, 3100);
+            myBurning.AddFrame(7, 2000);  
+            myBurning.AddFrame(9, 3500);
+            myBurning.AddFrame(0, 1000);
+            myBurning.AddFrame(1, 3000);
+            myBurning.AddFrame(2, 2000);
         }
 
 
