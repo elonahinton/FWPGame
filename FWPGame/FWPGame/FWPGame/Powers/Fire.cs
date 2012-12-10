@@ -36,7 +36,7 @@ namespace FWPGame.Powers
                 {
                     if (s != null)
                     {
-                        if (s.name.Equals("House") || s.name.Equals("Tree") || s.name.Equals("Road") || s.name.Equals("People") || s.name.Equals("Wood"))
+                        if (s.name.Equals("House") || s.name.Equals("Tree") || s.name.Equals("Road") || s.name.Equals("Wood"))
                         {
                             isBurnable = true;
                             spriteToBurn = s;

@@ -49,7 +49,6 @@ namespace FWPGame.Items
                 myAnimateSequence, myBurningSequence, myBurnt);
         }
 
-
         public override void burn()
         {
             myState = new BurningState(this);
@@ -200,6 +199,7 @@ namespace FWPGame.Items
             {
                 bool seqDone = false;
                 wood.myBurning.Update(elapsedTime, ref seqDone);
+
                 if (seqDone)
                 {
                     wood.myState = new BurntState(wood);

@@ -309,23 +309,20 @@ namespace FWPGame
 
 
                             // If this is people, they do random development
-                             else if (newSprite.name.Equals("People"))
+                             else if (decision.NextDouble() < 0.25  &&  newSprite.name.Equals("People"))
                             {
                                 int top = mapTiles[x, y].mySprites.Count - 1;
                                 Sprite develop = mapTiles[x, y].mySprites[top].Interact();
                                 if (develop != null)
                                 {
+                                    mapTiles[x, y].Clear();
                                     mapTiles[x, y].Add(develop);
                                 }
-                            }
-                            
+                            }   
                         }
                     }
-
                 }
             }
         }
-
     }
-
 }
