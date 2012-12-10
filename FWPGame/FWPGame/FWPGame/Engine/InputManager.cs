@@ -31,7 +31,15 @@ namespace FWPGame.Engine
 
         // This is the mapping from Keyboard Keys to GameAction objects
         static Dictionary<Keys, List<GameAction>> myKeyboardMap = new Dictionary<Keys, List<GameAction>>();
+        static List<Keys> disabledKeys = new List<Keys>();
 
+        static bool isLMBEnabled = true;
+        static bool isRMBEnabled = true;
+
+        public static void EnableKey(Keys k)
+        {
+            disabledKeys.Remove(k);
+        }
         // Anyone can add a new mapping from key to action.  This method is generic, since I don't
         // want to copy and paste this method for the two different types of Dictionaries I deal with.
         public static void AddToMap<T>(Dictionary<T, List<GameAction>> map, T key, GameAction action)
@@ -57,10 +65,11 @@ namespace FWPGame.Engine
         {
             AddToMap<Keys>(myKeyboardMap, key, action);
         }
+        
 
         // Perform the functions in the MouseDictionary, given the current MouseState.
         // Only do Mouse Click actions when the parameter is true.
-        public static void ActMouse(MouseState mouseState, bool doMouseClicks)
+        public static void ActMouse(MouseState mouseState)
         {
             // I'm predicting that any method that cares about the mouse clicks will also care WHERE
             // the mouse click happened.
@@ -69,26 +78,30 @@ namespace FWPGame.Engine
 
             // There's no ennumeration for the mouse buttons, so I have to have separate if statements.
             // The good news is that more buttons aren't likely to be added to the mouse any time soon.
-            if (mouseState.LeftButton == ButtonState.Pressed && myMouseMap.ContainsKey(LEFT_BUTTON))
+            if (mouseState.LeftButton == ButtonState.Pressed && myMouseMap.ContainsKey(LEFT_BUTTON) && isLMBEnabled)
             {
-                if (doMouseClicks)
-                {
                     foreach (GameAction a in myMouseMap[LEFT_BUTTON])
                     {
                         a.Invoke(parameterList);
                     }
-                }
+                    isLMBEnabled = false;
             }
-            if (mouseState.RightButton == ButtonState.Pressed && myMouseMap.ContainsKey(RIGHT_BUTTON))
+            if (mouseState.RightButton == ButtonState.Pressed && myMouseMap.ContainsKey(RIGHT_BUTTON) && isRMBEnabled)
             {
-                if (doMouseClicks)
                 {
                     foreach (GameAction a in myMouseMap[RIGHT_BUTTON])
                     {
                         a.Invoke(parameterList);
                     }
+                    isRMBEnabled = false;
                 }
             }
+
+            if (mouseState.LeftButton == ButtonState.Released && myMouseMap.ContainsKey(LEFT_BUTTON))
+                isLMBEnabled = true;
+
+            if (mouseState.RightButton == ButtonState.Released && myMouseMap.ContainsKey(RIGHT_BUTTON))
+                isRMBEnabled = true;
 
             if (myMouseMap.ContainsKey(POSITION))
             {
@@ -103,18 +116,29 @@ namespace FWPGame.Engine
         // state of the keyboard and makes the corresponding actions happen.
         public static void ActKeyboard(KeyboardState keyState)
         {
-            Keys[] allPressed = keyState.GetPressedKeys();
-            foreach (Keys k in allPressed)
+            for (int i = 0; i < disabledKeys.Count; i++)
             {
-                if (myKeyboardMap.ContainsKey(k))
+                if (keyState.IsKeyDown(disabledKeys[i]) != true)
                 {
-                    List<GameAction> actionList = myKeyboardMap[k];
-                    foreach (GameAction action in actionList)
-                    {
-                        action.Invoke();
-                    }
+                    EnableKey(disabledKeys[i]);
                 }
             }
+            Keys[] allPressed = keyState.GetPressedKeys();
+                foreach (Keys k in allPressed)
+                {
+                    if (myKeyboardMap.ContainsKey(k) && disabledKeys.Contains(k) == false)
+                    {
+                        if (k == Keys.Space)
+                        {
+                            disabledKeys.Add(k);
+                        }
+                        List<GameAction> actionList = myKeyboardMap[k];
+                        foreach (GameAction action in actionList)
+                        {
+                            action.Invoke();
+                        }
+                    }
+                }
         }
     }
 }

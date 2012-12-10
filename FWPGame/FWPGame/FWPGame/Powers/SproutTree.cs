@@ -25,6 +25,7 @@ namespace FWPGame.Powers
             game = aGame;
             myPosition = position;
             myMapPosition = mapPosition;
+            myXP = 5;
         }
 
         public override void Interact(MapTile tile)

@@ -244,6 +244,8 @@ namespace FWPGame.Engine
             {
                 MapTile tile = myCursor.getTile();
                 mySelectedPower.Interact(tile);
+                myXP += mySelectedPower.myXP;
+                levelProgress = getLevelProgress();
             }
         }
 
@@ -329,7 +331,7 @@ namespace FWPGame.Engine
             if (levelPercent >= 1.0)
             {
                 myLevel += 1;
-                myXPtoNext += 10;
+                myXPtoNext = myXPtoNext*2;
                 myXP = 0;
                 levelPercent = 0;
             }

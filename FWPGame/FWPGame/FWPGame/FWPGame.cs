@@ -48,9 +48,6 @@ namespace FWPGame
         private SpriteFont broFont;
         private SpriteFont sisFont;
 
-        private const double INPUT_INTERVAL = 50;
-        private double lastInput = 0.0;
-
 
         public FWPGame()
         {
@@ -172,7 +169,7 @@ namespace FWPGame
                 this.Exit();
 
             // TODO: Add your update logic here
-            HandleInput(gameTime.TotalGameTime.Milliseconds);
+            HandleInput();
             Transmorg();
 
             map.Update(gameTime, worldScale);
@@ -183,19 +180,13 @@ namespace FWPGame
             base.Update(gameTime);
         }
 
-        private void HandleInput(double elapsedTime)
+        private void HandleInput()
         {
-            bool doMouseClicks = elapsedTime - lastInput > INPUT_INTERVAL;
-            if (elapsedTime < INPUT_INTERVAL)
-                doMouseClicks = true;
+
             if (this.IsActive == true)
             {
                 InputManager.ActKeyboard(Keyboard.GetState());
-                InputManager.ActMouse(Mouse.GetState(), doMouseClicks);
-                if (doMouseClicks)
-                {
-                    lastInput = elapsedTime;
-                }
+                InputManager.ActMouse(Mouse.GetState());
             }
         }
 
