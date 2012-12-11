@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Storage;
 using System.Collections;
 using System.Diagnostics;
 using FWPGame.Engine;
+using FWPGame.Powers;
 
 namespace FWPGame.Events
 {
@@ -90,19 +91,11 @@ namespace FWPGame.Events
             public FireballState(BrotherFire angryBroEvent, SoundEffect soundEffect, SpriteFont openingText)
             {
                 this.angryBro = angryBroEvent;
+                burnTile = BurnTiles(angryBro.map);
                 this.angryBro.nextState = false;
                 this.effect = soundEffect;
-                SetUpInput();
                 this.openingTxt = openingText;
-            }
-
-            public void SetUpInput()
-            {
-                GameAction next = new GameAction(
-                  this,
-                  this.GetType().GetMethod("setNextState"),
-                  new object[0]);
-                InputManager.AddToKeyboardMap(Keys.Space, next);
+                BurnTile(burnTile);
             }
 
             public void setNextState()
@@ -112,7 +105,11 @@ namespace FWPGame.Events
 
             public void Update(GameTime gameTime, Vector2 v)
             {
-                if (this.angryBro.nextState)
+                if (burnTile == null)
+                {
+                    angryBro.myEventState = new NoBurnState(this.angryBro, effect, openingTxt);
+                }
+                else if (this.angryBro.nextState)
                 {
                     angryBro.myEventState = new LeaveState(this.angryBro, effect, openingTxt);
                 }
@@ -124,16 +121,23 @@ namespace FWPGame.Events
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
 
+            public void BurnTile(MapTile tile)
+            {
+                Fire fire = new Fire(angryBro.myTexture, null, new Vector2(0, 0), new Vector2(0, 0));
+                fire.Interact(tile);
+                setNextState();
+            }
+
             public MapTile BurnTiles(Map map)
             {
                 List<MapTile> tiles = new List<MapTile>();
-                int tilesX = (int) (map.mySize.X / map.getMaxTileSize());
-                int tilesY = (int)(map.mySize.Y / map.getMaxTileSize());
+                int tilesX = map.MapTiles.GetLength(0);
+                int tilesY = map.MapTiles.GetLength(1);
                 for (int i = 0; i < tilesX; i++)
                 {
                     for (int j = 0; j < tilesY; j++)
                     {
-                        MapTile tile = map.MapTiles[tilesX, tilesY];
+                        MapTile tile = map.MapTiles[i, j];
                         if (isBurnable(tile))
                         {
                             tiles.Add(tile);
