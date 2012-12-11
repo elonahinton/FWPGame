@@ -178,8 +178,6 @@ namespace FWPGame.Engine
             if (ymax > mapTiles.GetLength(1))
                 ymax = mapTiles.GetLength(1);
 
-            int xToRender = (int)Math.Floor(myScreenSize.X / MAX_TILE_SIZE);
-            int yToRender = (int)Math.Floor(myScreenSize.Y / MAX_TILE_SIZE);
 
             for (int i = x; i < xmax; i++)
             {

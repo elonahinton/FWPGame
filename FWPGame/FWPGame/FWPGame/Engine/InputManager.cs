@@ -40,6 +40,7 @@ namespace FWPGame.Engine
         {
             disabledKeys.Remove(k);
         }
+
         // Anyone can add a new mapping from key to action.  This method is generic, since I don't
         // want to copy and paste this method for the two different types of Dictionaries I deal with.
         public static void AddToMap<T>(Dictionary<T, List<GameAction>> map, T key, GameAction action)
@@ -128,10 +129,7 @@ namespace FWPGame.Engine
                 {
                     if (myKeyboardMap.ContainsKey(k) && disabledKeys.Contains(k) == false)
                     {
-                        if (k == Keys.Space)
-                        {
-                            disabledKeys.Add(k);
-                        }
+                        disabledKeys.Add(k);
                         List<GameAction> actionList = myKeyboardMap[k];
                         foreach (GameAction action in actionList)
                         {
