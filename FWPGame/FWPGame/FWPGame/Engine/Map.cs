@@ -85,6 +85,38 @@ namespace FWPGame.Engine
             return tile;
         }
 
+        public List<MapTile> GetTiles(Cursor cursor)
+        {
+            List<MapTile> tiles = new List<MapTile>();
+            tiles.Add(GetTile(cursor));
+            //lower
+            cursor.myMapPosition.Y += MAX_TILE_SIZE;
+            tiles.Add(GetTile(cursor));
+            //lower right
+            cursor.myMapPosition.X += MAX_TILE_SIZE;
+            tiles.Add(GetTile(cursor));
+            //right
+            cursor.myMapPosition.Y -= MAX_TILE_SIZE;
+            tiles.Add(GetTile(cursor));
+            //upper right
+            cursor.myMapPosition.Y -= MAX_TILE_SIZE;
+            tiles.Add(GetTile(cursor));
+            //upper
+            cursor.myMapPosition.X -= MAX_TILE_SIZE;
+            tiles.Add(GetTile(cursor));
+            //upper left
+            cursor.myMapPosition.X -= MAX_TILE_SIZE;
+            tiles.Add(GetTile(cursor));
+            //left
+            cursor.myMapPosition.Y += MAX_TILE_SIZE;
+            tiles.Add(GetTile(cursor));
+            //lower left
+            cursor.myMapPosition.Y += MAX_TILE_SIZE;
+            tiles.Add(GetTile(cursor));
+
+            return tiles;
+        }
+
         /// <summary>
         /// Get the MapTile at the specified position - built in safeguards to disallow index out of bounds exceptions.
         /// </summary>

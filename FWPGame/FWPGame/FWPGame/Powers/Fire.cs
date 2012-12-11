@@ -71,12 +71,9 @@ namespace FWPGame.Powers
                 Interact(tile);
                 MapTile burnTile1 = pickATile(tiles);
                 Interact(burnTile1);
+                tiles.Remove(burnTile1);
                 MapTile burnTile2 = pickATile(tiles);
                 Interact(burnTile2);
-                //foreach (Sprite s in tile.mySprites)
-                //{
-                //    Debug.WriteLine(s.myState.ToString());
-                //}
             }
         }
 

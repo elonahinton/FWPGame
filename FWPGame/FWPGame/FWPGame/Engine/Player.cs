@@ -342,8 +342,7 @@ namespace FWPGame.Engine
 
         public void useComboPower()
         {
-            MapTile tile = myMap.GetTile(myCursor);
-            mySelectedPower.PowerCombo(tile, myPreviousPower);
+            mySelectedPower.PowerCombo(myMap.GetTiles(myCursor), myPreviousPower);
         }
 
         public void altUsePower(Vector2 mouseClickPosition)
@@ -359,7 +358,7 @@ namespace FWPGame.Engine
             if (levelPercent >= 1.0)
             {
                 myLevel += 1;
-                //myXPtoNext = myXPtoNext*2;
+                myXPtoNext = myXPtoNext*2;
                 myXP = 0;
                 levelPercent = 0;
                 if (myLevel % 2 == 0)
