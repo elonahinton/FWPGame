@@ -20,26 +20,31 @@ namespace FWPGame.Items
 {
     public class Water : Sprite
     {
+        private bool mother = true;
         private Texture2D[] myRainingSequence;
         private Animate myRaining;
+        private SoundEffectInstance myPlay;
 
         public Water(Texture2D texture, Vector2 position, Vector2
-            mapPosition, Texture2D[] rainingSequence) :
+            mapPosition, Texture2D[] rainingSequence, SoundEffectInstance rainPlay) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
-            name = "WaterSprite";
+            name = "Water";
             myRainingSequence = rainingSequence;
             myRaining = new Animate(rainingSequence);
             SetUpRaining();
+            myPlay = rainPlay;
             myState = new RainingState(this);
         }
 
 
         public Water Clone()
         {
-            return new Water(this.myTexture, new Vector2(0, 0),
-                new Vector2(0, 0), myRainingSequence);
+            Water newWater = new Water(this.myTexture, new Vector2(0, 0),
+                new Vector2(0, 0), myRainingSequence, myPlay);
+            mother = false;
+            return newWater;
         }
 
 
@@ -83,6 +88,10 @@ namespace FWPGame.Items
             public RainingState(Water sprite)
             {
                 water = sprite;
+                if (!water.mother)
+                {
+                    water.myPlay.Play();
+                }
             }
 
 

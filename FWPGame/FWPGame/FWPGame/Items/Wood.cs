@@ -22,10 +22,13 @@ namespace FWPGame.Items
         private Animate myAnimate;
         private Animate myBurning;
         private Texture2D myBurnt;
+        private SoundEffectInstance myPlay;
+        private House myHouse;
 
         public Wood(Texture2D texture, Vector2 position,
         Vector2 mapPosition, Texture2D[] animateSequence,
-        Texture2D[] burningSequence, Texture2D burnt) :
+        Texture2D[] burningSequence, Texture2D burnt, 
+        SoundEffectInstance firePlay, House house) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
@@ -39,6 +42,8 @@ namespace FWPGame.Items
             myBurning = new Animate(burningSequence);
             SetUpBurning();
             myBurnt = burnt;
+            myPlay = firePlay;
+            myHouse = house;
 
             myState = new CuttingState(this);
         }
@@ -46,7 +51,7 @@ namespace FWPGame.Items
         public Wood Clone()
         {
             return new Wood(this.myTexture, new Vector2(0, 0), new Vector2(0, 0), 
-                myAnimateSequence, myBurningSequence, myBurnt);
+                myAnimateSequence, myBurningSequence, myBurnt, myPlay, myHouse);
         }
 
         public override void burn()
@@ -102,6 +107,13 @@ namespace FWPGame.Items
             myBurning.AddFrame(1, 3000);
             myBurning.AddFrame(2, 2000);
         }
+
+
+        public override Sprite Transform()
+        {
+            return myHouse.Clone();
+        }
+
 
 
         // The Regular State
@@ -185,6 +197,7 @@ namespace FWPGame.Items
             public BurningState(Wood sprite)
             {
                 wood = sprite;
+                wood.myPlay.Play();
             }
 
             // Determine whether this is a spreading conditition

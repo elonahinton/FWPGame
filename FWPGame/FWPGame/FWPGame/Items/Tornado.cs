@@ -35,31 +35,23 @@ namespace FWPGame.Items
         public void SetUpAnimate()
         {
             // Prepare the flip book sequence for expected Animate
-            myAnimate.AddFrame(0, 1);
-            myAnimate.AddFrame(1, 1);
-            myAnimate.AddFrame(2, 1);
-            myAnimate.AddFrame(3, 1);
-            myAnimate.AddFrame(4, 1);
-            myAnimate.AddFrame(5, 1);
-            myAnimate.AddFrame(6, 1);
-            myAnimate.AddFrame(7, 1);
-            myAnimate.AddFrame(8, 1);
-            myAnimate.AddFrame(9, 1);
-            myAnimate.AddFrame(10, 1);
-            myAnimate.AddFrame(11, 1);
-            myAnimate.AddFrame(12, 1);
+            for (int j = 0; j < 5; ++j)
+            {
+                for (int i = 0; i < 13; ++i)
+                {
+                    myAnimate.AddFrame(i, 100);
+                }
+            }
         }
 
         public void setMyPosition(Vector2 pos)
         {
             myPosition = pos;
-            Debug.WriteLine("position is at: " + pos);
         }
 
         public void setMyMapPosition(Vector2 pos)
         {
             myMapPosition = pos;
-            Debug.WriteLine("map position is at: " + pos);
         }
 
         public Tornado Clone()
@@ -98,6 +90,7 @@ namespace FWPGame.Items
             Debug.WriteLine("relative position: " + myPosition);
         }
 
+
         class GoneState : State
         {
             public GoneState(Sprite s)
@@ -107,18 +100,17 @@ namespace FWPGame.Items
                 s.myPosition = new Vector2(0, 0);
             }
 
+            public Sprite Spread()
+            {
+                return null;
+            }
+
             public void Update(double elapsedTime, Vector2 playerMapPos)
             {
-
             }
 
             public void Draw(SpriteBatch batch)
             {
-            }
-
-            public Sprite Spread()
-            {
-                return null;
             }
         }
     }

@@ -23,9 +23,11 @@ namespace FWPGame.Items
         private Texture2D[] myBurningSequence;
         private Animate myBurning;
         private Texture2D myBurnt;
+        private SoundEffectInstance myPlay;
 
         public Road(Texture2D texture, Vector2 position, Vector2 mapPosition, 
-            Texture2D[] burningSequence, Texture2D burnt, Texture2D highway,  Texture2D village, Texture2D city) :
+            Texture2D[] burningSequence, Texture2D burnt, SoundEffectInstance firePlay,
+            Texture2D highway,  Texture2D village, Texture2D city) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
@@ -38,6 +40,7 @@ namespace FWPGame.Items
             myBurning = new Animate(burningSequence);
             SetUpBurning();
             myBurnt = burnt;
+            myPlay = firePlay;
             myState = new RegularState(this);
         }
 
@@ -57,7 +60,7 @@ namespace FWPGame.Items
         public Road Clone()
         {
             return new Road(this.myTexture, new Vector2(0, 0), new Vector2(0, 0),
-                myBurningSequence, myBurnt, myHighway, myVillage, myCity);
+                myBurningSequence, myBurnt, myPlay, myHighway, myVillage, myCity);
         }
 
 
@@ -229,6 +232,7 @@ namespace FWPGame.Items
             public BurningState(Road sprite)
             {
                 road = sprite;
+                road.myPlay.Play();
             }
 
 

@@ -15,49 +15,26 @@ using System.Diagnostics;
 
 namespace FWPGame.Items
 {
-    public class House : Sprite
+    public class Grass : Sprite
     {
         private Texture2D[] myAnimateSequence;
         private Animate myAnimate;
         private Texture2D myBurnt;
         private SoundEffectInstance myPlay;
-        private Texture2D myLit;
 
-        public House(Texture2D texture, Vector2 position, Vector2 mapPosition, Texture2D[] animateSequence, Texture2D burnt,
-            SoundEffectInstance firePlay, Texture2D lit) :
+        public Grass(Texture2D texture, Vector2 position, Vector2 mapPosition,
+            Texture2D[] burningSequence, Texture2D burnt, SoundEffectInstance firePlay) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
-            name = "House";
-            myAnimateSequence = animateSequence;
-            myAnimate = new Animate(animateSequence);
+            
+			name = "Grass";
+            myAnimateSequence = burningSequence;
+            myAnimate = new Animate(burningSequence);
             SetUpAnimate();
             myBurnt = burnt;
             myPlay = firePlay;
-            myLit = lit;
             myState = new RegularState(this);
-        }
-
-        public House Clone()
-        {
-            return new House(this.myTexture, new Vector2(0, 0), new Vector2(0, 0),
-                myAnimateSequence, myBurnt, myPlay, myLit);
-        }
-
-
-        public override void burn()
-        {
-            myState = new BurningState(this);
-        }
-
-        public void burnt()
-        {
-            myState = new BurntState(this);
-        }
-
-        public void electrocute()
-        {
-            myState = new ElectricState(this);
         }
 
         public void setMyPosition(Vector2 pos)
@@ -68,6 +45,18 @@ namespace FWPGame.Items
         public void setMyMapPosition(Vector2 pos)
         {
             myMapPosition = pos;
+        }
+
+        public Grass Clone()
+        {
+            return new Grass(this.myTexture, new Vector2(0,0), new Vector2(0,0),
+                myAnimateSequence, myBurnt, myPlay);
+        }
+
+
+        public override void burn()
+        {
+            myState = new BurningState(this);
         }
 
 
@@ -85,17 +74,6 @@ namespace FWPGame.Items
             myAnimate.AddFrame(0, 2900);
             myAnimate.AddFrame(5, 1000);
             myAnimate.AddFrame(0, 2900);
-            myAnimate.AddFrame(6, 1000);
-            myAnimate.AddFrame(0, 2900);
-            myAnimate.AddFrame(7, 1000);
-            myAnimate.AddFrame(0, 2900);
-            myAnimate.AddFrame(8, 1000);
-            myAnimate.AddFrame(0, 2900);
-            myAnimate.AddFrame(9, 1000);
-            myAnimate.AddFrame(0, 2900);
-            myAnimate.AddFrame(1, 1000);
-            myAnimate.AddFrame(0, 2900);
-            myAnimate.AddFrame(2, 1000);
             myAnimate.AddFrame(0, 2900);
             myAnimate.AddFrame(3, 1000);
             myAnimate.AddFrame(0, 2900);
@@ -112,74 +90,81 @@ namespace FWPGame.Items
             myAnimate.AddFrame(9, 1000);
         }
 
+        public override Sprite Transform()
+        {
+            Grass grass = Clone();
+            grass.myState = new BurningState(grass);
+            return grass;
+        }
+        
+
 
         // The Regular State
         class RegularState : State
         {
-            private House house;
+            private Grass grass;
 
-            public RegularState(House sprite)
+            public RegularState(Grass sprite)
             {
-                house = sprite;
+                grass = sprite;
             }
 
             // Determine whether this is a spreading conditition
             public Sprite Spread()
             {
-                House newHouse = house.Clone();
-                newHouse.myState = new RegularState(newHouse);
-                return newHouse;
+                Grass newGrass = grass.Clone();
+                newGrass.myState = new RegularState(newGrass);
+                return newGrass;
             }
 
             public void Update(double elapsedTime, Vector2 playerMapPos)
             {
-
-                house.myPosition = house.myMapPosition - playerMapPos;
             }
 
             public void Draw(SpriteBatch batch)
             {
-                batch.Draw(house.myTexture, house.myPosition,
+                batch.Draw(grass.myTexture, grass.myPosition,
                         null, Color.White,
-                        house.myAngle, house.myOrigin, house.myScale,
+                        grass.myAngle, grass.myOrigin, grass.myScale,
                         SpriteEffects.None, 0f);
             }
-
         }
+
+
 
         // The Burning State
         class BurningState : State
         {
-            private House house;
+            private Grass grass;
 
-            public BurningState(House sprite)
+            public BurningState(Grass sprite)
             {
-                house = sprite;
-                house.myPlay.Play();
+                grass = sprite;
+                grass.myPlay.Play();
             }
 
             // Determine whether this is a spreading conditition
             public Sprite Spread()
             {
-                House newHouse = house.Clone();
-                newHouse.myState = new BurningState(newHouse);
-                return newHouse;
+                Grass newGrass = grass.Clone();
+                newGrass.myState = new BurningState(newGrass);
+                return newGrass;
             }
 
             public void Update(double elapsedTime, Vector2 playerMapPos)
             {
                 bool seqDone = false;
-                house.myAnimate.Update(elapsedTime, ref seqDone);
+                grass.myAnimate.Update(elapsedTime, ref seqDone);
                 if (seqDone)
                 {
-                    house.myState = new BurntState(house);
+                    grass.myState = new BurntState(grass);
                 }
             }
 
             public void Draw(SpriteBatch batch)
             {
-                batch.Draw(house.myAnimate.GetImage(), house.myPosition, null, Color.White, house.myAngle,
-                        house.myOrigin, house.myScale,
+                batch.Draw(grass.myAnimate.GetImage(), grass.myPosition, null, Color.White, grass.myAngle,
+                        grass.myOrigin, grass.myScale,
                         SpriteEffects.None, 0f);
             }
 
@@ -189,22 +174,24 @@ namespace FWPGame.Items
             }
         }
 
+
+
         // The Burnt State
         class BurntState : State
         {
-            private House house;
+            private Grass grass;
 
-            public BurntState(House sprite)
+            public BurntState(Grass sprite)
             {
-                house = sprite;
+                grass = sprite;
             }
 
             // Determine whether this is a spreading conditition
             public Sprite Spread()
             {
-                House newHouse = house.Clone();
-                newHouse.myState = new RegularState(newHouse);
-                return newHouse;
+                Grass newGrass = grass.Clone();
+                newGrass.myState = new RegularState(newGrass);
+                return newGrass;
             }
 
             public void Update(double elapsedTime, Vector2 playerMapPos)
@@ -213,38 +200,9 @@ namespace FWPGame.Items
 
             public void Draw(SpriteBatch batch)
             {
-                batch.Draw(house.myBurnt, house.myPosition,
+                batch.Draw(grass.myBurnt, grass.myPosition,
                     null, Color.White,
-                    house.myAngle, house.myOrigin, house.myScale,
-                    SpriteEffects.None, 0f);
-            }
-        }
-
-        //electric state
-        class ElectricState : State
-        {
-            private House house;
-
-            public ElectricState(House sprite)
-            {
-                house = sprite;
-            }
-
-            // Determine whether this is a spreading conditition
-            public Sprite Spread()
-            {
-                return null;
-            }
-
-            public void Update(double elapsedTime, Vector2 playerMapPos)
-            {
-            }
-
-            public void Draw(SpriteBatch batch)
-            {
-                batch.Draw(house.myLit, house.myPosition,
-                    null, Color.White,
-                    house.myAngle, house.myOrigin, house.myScale,
+                    grass.myAngle, grass.myOrigin, grass.myScale,
                     SpriteEffects.None, 0f);
             }
         }

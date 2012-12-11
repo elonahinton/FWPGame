@@ -52,7 +52,7 @@ namespace FWPGame
         }
 
         // Determine whether this is a human development conditition
-        public virtual Sprite Interact()
+        public virtual Sprite Transform()
         {
             // The default behavior
             return null;

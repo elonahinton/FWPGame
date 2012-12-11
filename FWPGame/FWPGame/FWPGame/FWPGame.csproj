@@ -87,14 +87,14 @@
     <Compile Include="Events\Introduction.cs" />
     <Compile Include="Events\LearnPowerCombo.cs" />
     <Compile Include="Events\SisterTrouble.cs" />
-    <Compile Include="Items\GrassSprite.cs" />
+    <Compile Include="Items\Grass.cs" />
     <Compile Include="Engine\Map.cs" />
     <Compile Include="Engine\Player.cs" />
     <Compile Include="Items\Halo.cs" />
     <Compile Include="Items\House.cs" />
     <Compile Include="Items\Road.cs" />
     <Compile Include="Items\Tornado.cs" />
-    <Compile Include="Items\WaterSprite.cs" />
+    <Compile Include="Items\Water.cs" />
     <Compile Include="LoadObjects.cs" />
     <Compile Include="Items\People.cs" />
     <Compile Include="Powers\BuildHouse.cs" />

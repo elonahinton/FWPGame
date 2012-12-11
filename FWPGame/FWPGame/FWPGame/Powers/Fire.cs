@@ -40,7 +40,8 @@ namespace FWPGame.Powers
                 {
                     if (s != null)
                     {
-                        if (s.name.Equals("House") || s.name.Equals("Tree") || s.name.Equals("Road") || s.name.Equals("Wood"))
+                        if (s.name.Equals("House") || s.name.Equals("Tree") ||
+                            s.name.Equals("Road") || s.name.Equals("Wood"))
                         {
                             isBurnable = true;
                             spriteToBurn = s;
@@ -53,7 +54,7 @@ namespace FWPGame.Powers
             {
                 MethodInfo myMethod = spriteToBurn.GetType().GetMethod("burn");
                 myMethod.Invoke(spriteToBurn, null);
-                if (tile.mySprites.ElementAt(0).name.Equals("GrassSprite"))
+                if (tile.mySprites.ElementAt(0).name.Equals("Grass"))
                 {
                     tile.mySprites.RemoveAt(0);
                 }

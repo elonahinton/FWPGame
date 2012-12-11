@@ -39,7 +39,7 @@ namespace FWPGame.Powers
                 {
                     if (s != null)
                     {
-                        if (s.name.Equals("GrassSprite"))
+                        if (s.name.Equals("Grass"))
                         {
                             grassFound = true;
                         }

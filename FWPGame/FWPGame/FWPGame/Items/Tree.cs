@@ -22,6 +22,7 @@ namespace FWPGame.Items
         private Texture2D[] myBurningSequence;
         private Animate myBurning;
         private Texture2D myBurnt;
+        private SoundEffectInstance myPlay;
         private Texture2D myElectrocute;
         private Texture2D[] myMultiplySequence;
         private Animate myMultiply;
@@ -30,7 +31,8 @@ namespace FWPGame.Items
 
         public Tree(Texture2D texture, Vector2 position,
             Vector2 mapPosition, Texture2D[] burningSequence,
-            Texture2D burnt, Texture2D electrocute,
+            Texture2D burnt, SoundEffectInstance firePlay,
+            Texture2D electrocute,
             Texture2D[] multiplyTree, Wood wood) :
             base(texture, position)
         {
@@ -40,6 +42,7 @@ namespace FWPGame.Items
             myBurning = new Animate(burningSequence);
             SetUpBurning();
             myBurnt = burnt;
+            myPlay = firePlay;
             myElectrocute = electrocute;
             myMultiplySequence = multiplyTree;
             myMultiply = new Animate(multiplyTree);
@@ -52,7 +55,7 @@ namespace FWPGame.Items
         public Tree Clone()
         {
             return new Tree(this.myTexture, new Vector2(0, 0), new Vector2(0, 0),
-                myBurningSequence, myBurnt, myElectrocute, myMultiplySequence, myWood);
+                myBurningSequence, myBurnt, myPlay, myElectrocute, myMultiplySequence, myWood);
         }
 
 
@@ -114,7 +117,7 @@ namespace FWPGame.Items
         }
 
 
-        public override Sprite Interact()
+        public override Sprite Transform()
         {
             return myWood.Clone();
         }
@@ -161,6 +164,7 @@ namespace FWPGame.Items
             public BurningState(Tree sprite)
             {
                 tree = sprite;
+                tree.myPlay.Play();
             }
 
 

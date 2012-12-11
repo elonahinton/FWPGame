@@ -19,10 +19,10 @@ namespace FWPGame
 {
     public partial class FWPGame : Microsoft.Xna.Framework.Game
     {
-        protected internal GrassSprite myGrass;
+        protected internal Grass myGrass;
         protected internal Road myRoad;
         protected internal Water motherWater;
-        public Wood motherWood;
+        protected internal Wood motherWood;
         protected internal Tree motherTree;
         protected internal House motherHouse;
         protected internal Tornado motherTornado;
@@ -31,14 +31,26 @@ namespace FWPGame
         protected internal List<Sprite> transObj = new List<Sprite>();
         private SproutTree sproutTree;
         private MakePerson makePerson;
+        
+        private SoundEffect fireEffect;
+        private SoundEffectInstance firePlay;
+        private SoundEffect rainEffect;
+        private SoundEffectInstance rainPlay;
 
         //
         protected void LoadObjects()
         {
-            myGrass = new GrassSprite(Content.Load<Texture2D>("grass"),
-                new Vector2(0, 0), new Vector2(0, 0));
 
-            // Create Water instance
+            // Fire and Rain sound effects
+            fireEffect = Content.Load<SoundEffect>("sound/fire");
+            firePlay = fireEffect.CreateInstance();
+            rainEffect = Content.Load<SoundEffect>("sound/rain");
+            rainPlay = rainEffect.CreateInstance();
+            
+
+            /* Create Animation sequences */
+
+            // Rain
             Texture2D[] rainingWater = {
                 Content.Load<Texture2D>("raining/rain_0"),
                 Content.Load<Texture2D>("raining/rain_1"),
@@ -63,9 +75,9 @@ namespace FWPGame
                 Content.Load<Texture2D>("raining/rain_20"),
                 Content.Load<Texture2D>("raining/rain_21")
             };
-            motherWater = new Water(Content.Load<Texture2D>("water"), new Vector2(0, 0), new Vector2(0, 0), rainingWater);
+            
  
-            // Create a Tree (& Wood) instance
+            // Burning
             Texture2D[] burningSequence = {
                 Content.Load<Texture2D>("burning/burn_0"),
                 Content.Load<Texture2D>("burning/burn_1"),
@@ -78,6 +90,8 @@ namespace FWPGame
                 Content.Load<Texture2D>("burning/burn_8"),
                 Content.Load<Texture2D>("burning/burn_9")
             };
+
+            // Squirrel planting
             Texture2D[] multiplyTree = {
                 Content.Load<Texture2D>("tree/squirrelplant/planttree_0"),
                 Content.Load<Texture2D>("tree/squirrelplant/planttree_1"),
@@ -149,7 +163,7 @@ namespace FWPGame
                 Content.Load<Texture2D>("tree/squirrelplant/planttree_67")
             };
 
-            // Create Wood instance
+            // Wood cutting
             Texture2D[] fellTree = {
                 Content.Load<Texture2D>("wood/fell/fell_0"),
                 Content.Load<Texture2D>("wood/fell/fell_1"),
@@ -157,26 +171,8 @@ namespace FWPGame
                 Content.Load<Texture2D>("wood/fell/fell_3"),
                 Content.Load<Texture2D>("wood/fell/fell_4")
             };
-            motherWood = new Wood(Content.Load<Texture2D>("wood/logs"), new Vector2(0, 0), new Vector2(0, 0),
-                fellTree, burningSequence, Content.Load<Texture2D>("wood/logsBurnt"));
-            motherTree = new Tree(Content.Load<Texture2D>("tree/tree"), new Vector2(0, 0), new Vector2(0, 0),
-                burningSequence, Content.Load<Texture2D>("tree/burntTree"), Content.Load<Texture2D>("tree/burntTree"),
-                multiplyTree, motherWood);
 
-            myRoad = new Road(Content.Load<Texture2D>("infrastructure/dirtRoad"),
-                new Vector2(0, 0), new Vector2(0, 0), burningSequence,
-                Content.Load<Texture2D>("infrastructure/burntTown"),
-                Content.Load<Texture2D>("infrastructure/highway"),
-                Content.Load<Texture2D>("infrastructure/village"),
-                Content.Load<Texture2D>("infrastructure/city")
-                );
-
-
-            person = new People(Content.Load<Texture2D>("people/person"), new Vector2(0,0), new Vector2(0,0), null,
-                Content.Load<Texture2D>("people/humanBurn"), Content.Load<Texture2D>("people/electrocute/electrocute_7"));
-
-
-            // Create a House instance
+            // House burning
             Texture2D[] burnHouseSequence = {
                 Content.Load<Texture2D>("house/houseFire"),
                 Content.Load<Texture2D>("burning/burn_0"),
@@ -190,8 +186,36 @@ namespace FWPGame
                 Content.Load<Texture2D>("burning/burn_8"),
                 Content.Load<Texture2D>("burning/burn_9")
             };
+
+            /* Create Mother instances of items */
+
+            motherWater = new Water(Content.Load<Texture2D>("water"), new Vector2(0, 0), new Vector2(0, 0),
+                rainingWater, rainPlay);
+
+            myGrass = new Grass(Content.Load<Texture2D>("grass"), new Vector2(0, 0), new Vector2(0, 0),
+                burningSequence, Content.Load<Texture2D>("burntGrass"), firePlay);
+
             motherHouse = new House(Content.Load<Texture2D>("house/house"), new Vector2(0, 0), new Vector2(0, 0),
-                burnHouseSequence, Content.Load<Texture2D>("house/houseBurnt"), Content.Load<Texture2D>("house/houseLit"));
+                burnHouseSequence, Content.Load<Texture2D>("house/houseBurnt"), firePlay, 
+                Content.Load<Texture2D>("house/houseLit"));
+
+            motherWood = new Wood(Content.Load<Texture2D>("wood/logs"), new Vector2(0, 0), new Vector2(0, 0),
+                fellTree, burningSequence, Content.Load<Texture2D>("wood/logsBurnt"), firePlay, motherHouse);
+
+            motherTree = new Tree(Content.Load<Texture2D>("tree/tree"), new Vector2(0, 0), new Vector2(0, 0),
+                burningSequence, Content.Load<Texture2D>("tree/burntTree"), firePlay,
+                Content.Load<Texture2D>("tree/burntTree"), multiplyTree, motherWood);
+
+            myRoad = new Road(Content.Load<Texture2D>("infrastructure/dirtRoad"),
+                new Vector2(0, 0), new Vector2(0, 0), burningSequence,
+                Content.Load<Texture2D>("infrastructure/burntTown"), firePlay,
+                Content.Load<Texture2D>("infrastructure/highway"),
+                Content.Load<Texture2D>("infrastructure/village"),
+                Content.Load<Texture2D>("infrastructure/city"));
+
+            person = new People(Content.Load<Texture2D>("people/person"), new Vector2(0, 0), new Vector2(0, 0), null,
+                Content.Load<Texture2D>("people/humanBurn"), Content.Load<Texture2D>("people/electrocute/electrocute_7"));
+
 
             Texture2D[] spinTornadoSequence = {
                 Content.Load<Texture2D>("Tornado/tor_00"),
@@ -210,20 +234,22 @@ namespace FWPGame
 
             motherTornado = new Tornado(spinTornadoSequence, new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0));
             motherHalo = new Halo(Content.Load<Texture2D>("Protect/bubble"), new Vector2(0, 0), new Vector2(0, 0));
-
-            //extras and placeholders for now
-            //powers.Add(sproutTree);
-            //powers.Add(new Fire(Content.Load<Texture2D>("UI/fireicon"), this, new Vector2(0, 0), new Vector2(0, 0)));
-            //powers.Add(new BuildHouse(Content.Load<Texture2D>("UI/home"), this, new Vector2(0, 0), new Vector2(0, 0)));
         }
 
-        //public ArrayList SproutTreeTextures()
-        //{
-        //    ArrayList trees = new ArrayList();
-        //    trees.Add(Content.Load<Texture2D>("tree/tree"));
-        //    return trees;
-        //}
 
+        /* The Transmorg routine applies random transformations to the entire world.
+         * Some of the transformation relationships are meant to appear as "Acts of gods"
+         * while others are the apparent effect of human activity.
+         * 
+         * Most of the logic to effect the transformations is in the objects themselves.
+         * This framework of code is a non-AI randomizer that traverses the entire map
+         * of the world, selecting items to "transmorg".
+         * 
+         * *Bad code* choices:
+         * The "magic numbers" are just that - flexible tuning numbers for random decisions.
+         * Liberal use of "continue/return" while never necessary, due to the desire to most
+         * often do nothing, arguably makes this particular routine easier to understand.
+         */ 
         private void Transmorg()
         {
             Random decision = new Random();
@@ -231,6 +257,7 @@ namespace FWPGame
             int x;
             int y;
 
+            // Most of the time, don't do anything at all..
             if (decision.NextDouble() > 0.001)
             {
                 return;
@@ -284,7 +311,7 @@ namespace FWPGame
                             // Make sure we have a valid tile
                             map.SpreadTile(ref x, ref y);
 
-                            // If this is road, they get upgraded in place in development
+                            // If this is road, they get upgraded in place in human development
                             if (newSprite.name.Equals("Road"))
                             {
                                 mapTiles[i, j].Add(newSprite);
@@ -303,11 +330,11 @@ namespace FWPGame
                             }
 
 
-                            // If this is people, they do random development
-                             else if (decision.NextDouble() < 0.25  &&  newSprite.name.Equals("People"))
+                            // Do random development and/or destruction
+                             else if (decision.NextDouble() < 0.4)
                             {
                                 int top = mapTiles[x, y].mySprites.Count - 1;
-                                Sprite develop = mapTiles[x, y].mySprites[top].Interact();
+                                Sprite develop = mapTiles[x, y].mySprites[top].Transform();
                                 if (develop != null)
                                 {
                                     mapTiles[x, y].Clear();
