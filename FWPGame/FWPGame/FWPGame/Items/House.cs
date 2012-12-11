@@ -47,6 +47,11 @@ namespace FWPGame.Items
             myState = new BurningState(this);
         }
 
+        public void burnt()
+        {
+            myState = new BurntState(this);
+        }
+
         public void electrocute()
         {
             myState = new ElectricState(this);

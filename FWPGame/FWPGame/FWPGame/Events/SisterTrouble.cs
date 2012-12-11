@@ -14,6 +14,8 @@ using System.Collections;
 using System.Diagnostics;
 using FWPGame.Engine;
 using FWPGame.Powers;
+using FWPGame.Items;
+using System.Reflection;
 
 namespace FWPGame.Events
 {
@@ -125,12 +127,50 @@ namespace FWPGame.Events
                 batch.DrawString(sisterTxt, instructions, new Vector2(0, 0), Color.White);
             }
 
-            public void BurnTile(MapTile tile)
+            public void BuildTile(MapTile tile)
             {
                 GrowGrass grass = new GrowGrass(angrySis.myTexture, null, new Vector2(0, 0), new Vector2(0, 0));
                 grass.Interact(tile);
-
+                BuildHouse house = new BuildHouse(angrySis.myTexture, null, new Vector2(0, 0), new Vector2(0, 0));
+                house.Interact(tile);
+                foreach (Sprite s in tile.mySprites)
+                {
+                    if (s.name.Equals("House"))
+                    {
+                        MethodInfo myMethod = s.GetType().GetMethod("burnt");
+                        myMethod.Invoke(s, null);
+                    }
+                }
                 setNextState();
+            }
+
+            public MapTile BurnTiles(Map map)
+            {
+                List<MapTile> tiles = new List<MapTile>();
+                int tilesX = map.MapTiles.GetLength(0);
+                int tilesY = map.MapTiles.GetLength(1);
+                for (int i = 0; i < tilesX; i++)
+                {
+                    for (int j = 0; j < tilesY; j++)
+                    {
+                        MapTile tile = map.MapTiles[i, j];
+                        if (tile.mySprites.Count == 0)
+                        {
+                            tiles.Add(tile);
+                        }
+                    }
+                }
+                if (tiles.Count == 0)
+                {
+                    map.MapTiles[0, 0].ClearTile();
+                    return map.MapTiles[0, 0];
+                }
+                else
+                {
+                    Random rand = new Random();
+                    int tileNum = rand.Next(0, tiles.Count);
+                    return tiles[tileNum];
+                }
             }
         }
 

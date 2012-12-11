@@ -28,6 +28,7 @@ namespace FWPGame.Powers
 
         public override void Interact(MapTile tile)
         {
+            tile.ClearTile();
             tile.Add(game.myGrass.Clone());            
         }
 
