@@ -315,7 +315,7 @@ namespace FWPGame.Engine
             }
             else
             {
-                Debug.WriteLine("That power does not exist.");
+                //Debug.WriteLine("That power does not exist.");
             }
         }
 
@@ -408,6 +408,7 @@ namespace FWPGame.Engine
                         case 8:
                             {
                                 availablePowers.Add(myPowers["wind"]);
+                                scene = new LearnPowerCombo(dadGod, new Vector2(0, 0), new Vector2(0, 0), dadFont);
                                 break;
                             }
                         case 9:

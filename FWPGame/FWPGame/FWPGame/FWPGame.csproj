@@ -85,6 +85,7 @@
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventState.cs" />
     <Compile Include="Events\Introduction.cs" />
+    <Compile Include="Events\LearnPowerCombo.cs" />
     <Compile Include="Events\SisterTrouble.cs" />
     <Compile Include="Items\GrassSprite.cs" />
     <Compile Include="Engine\Map.cs" />

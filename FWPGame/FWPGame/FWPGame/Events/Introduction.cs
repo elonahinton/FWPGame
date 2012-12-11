@@ -37,7 +37,6 @@ namespace FWPGame.Events
 
             public IntroState1(Introduction intro, SoundEffect effect, SpriteFont openingText)
             {
-                Debug.WriteLine("in intro state 1");
                 this.intro = intro;
                 this.intro.nextState = false;
                 this.effect = effect;
@@ -73,7 +72,6 @@ namespace FWPGame.Events
             {
                 if (this.intro.nextState)
                 {
-                    Debug.WriteLine("leaving intro state 1");
                     intro.myEventState = new IntroState2(this.intro, effect, openingTxt);
                 }
             }
