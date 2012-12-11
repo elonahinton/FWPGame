@@ -13,19 +13,22 @@ using Microsoft.Xna.Framework.Storage;
 using System.Collections;
 using System.Diagnostics;
 using FWPGame.Engine;
+using FWPGame.Powers;
 
 namespace FWPGame.Events
 {
     public class SisterTrouble : Event
     {
         private bool nextState;
+        private Map myMap;
 
-        public SisterTrouble(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font) :
+        public SisterTrouble(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font, Map aMap) :
             base(texture, position, mapPosition, font)
         {
             myMapPosition = mapPosition;
             myTexture = texture;
             myPosition = position;
+            myMap = aMap;
             this.myEventState = new SisterVisit(this, null, font); //second argument is sound effect, if wanted
         }
 
@@ -82,6 +85,7 @@ namespace FWPGame.Events
             private SoundEffect effect;
             private SpriteFont sisterTxt;
             private SisterTrouble angrySis;
+            private MapTile tileToBuild;
 
             public TroubleState(SisterTrouble angrySisterEvent, SoundEffect soundEffect, SpriteFont sisterText)
             {
@@ -119,6 +123,14 @@ namespace FWPGame.Events
                 String instructions = "";
                 //draw something small happen
                 batch.DrawString(sisterTxt, instructions, new Vector2(0, 0), Color.White);
+            }
+
+            public void BurnTile(MapTile tile)
+            {
+                GrowGrass grass = new GrowGrass(angrySis.myTexture, null, new Vector2(0, 0), new Vector2(0, 0));
+                grass.Interact(tile);
+
+                setNextState();
             }
         }
 
@@ -162,7 +174,7 @@ namespace FWPGame.Events
             public void Draw(SpriteBatch batch)
             {
                 String instructions = "There you two are! It is great to see you are helping\n" +
-                                      "your sister learn how to make a INSERT POWER NAME!\n" +
+                                      "your sister learn how to build a house!\n" +
                                       "You will be a good fledgling when your time comes!\n" +
                                       "Hmmm... It looks as though this one was not done too well...\n" +
                                       "Here, you should probably take these insructions with you!\n\n" +

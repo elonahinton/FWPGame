@@ -372,7 +372,7 @@ namespace FWPGame.Engine
                             }
                         case 4:
                             {
-                                scene = new SisterTrouble(sisGod, new Vector2(0, 0), new Vector2(0, 0), sisFont);
+                                scene = new SisterTrouble(sisGod, new Vector2(0, 0), new Vector2(0, 0), sisFont, myMap);
                                 break;
                             }
                         case 6:

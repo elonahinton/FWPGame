@@ -95,7 +95,10 @@ namespace FWPGame.Events
                 this.angryBro.nextState = false;
                 this.effect = soundEffect;
                 this.openingTxt = openingText;
-                BurnTile(burnTile);
+                if (burnTile != null)
+                {
+                    BurnTile(burnTile);
+                }
             }
 
             public void setNextState()
