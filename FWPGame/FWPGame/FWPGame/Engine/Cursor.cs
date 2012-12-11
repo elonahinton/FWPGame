@@ -15,14 +15,12 @@ namespace FWPGame.Engine
 {
     public class Cursor : Sprite
     {
-        private List<Sprite> sprites;
         public Cursor(Texture2D texture, Vector2 position) :
             base(texture, position)
         {
             myTexture = texture;
             myPosition = position;
             SetupInput();
-            sprites = new List<Sprite>();
         }
 
         /// <summary>
