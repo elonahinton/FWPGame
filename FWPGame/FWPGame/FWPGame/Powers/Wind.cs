@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -11,8 +11,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using FWPGame.Engine;
 using FWPGame.Items;
-using System.Reflection;
-using System.Diagnostics;
+using System.Collections;
 namespace FWPGame.Powers
 {
     class Wind : Power
@@ -32,11 +31,11 @@ namespace FWPGame.Powers
         }
 
 
-        public override void PowerCombo(MapTile tile, Power power2)
+        public override void PowerCombo(List<MapTile> tiles, Power power2)
         {
             if (power2.name.Equals("Fire"))
             {
-                power2.PowerCombo(tile, this);
+                power2.PowerCombo(tiles, this);
             }
         }
     }

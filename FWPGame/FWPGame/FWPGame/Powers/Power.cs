@@ -54,7 +54,7 @@ namespace FWPGame.Powers
         {
         }
 
-        public virtual void PowerCombo(MapTile tile, Power power2)
+        public virtual void PowerCombo(List<MapTile> tiles, Power power2)
         {
         }
     }

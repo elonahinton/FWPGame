@@ -13,6 +13,7 @@ using FWPGame.Engine;
 using FWPGame.Items;
 using System.Reflection;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace FWPGame.Powers
 {
@@ -61,18 +62,29 @@ namespace FWPGame.Powers
         }
 
 
-        public override void PowerCombo(MapTile tile, Power power2)
+        public override void PowerCombo(List<MapTile> tiles, Power power2)
         {
+            MapTile tile = tiles[0];
+            tiles.RemoveAt(0);
             if (power2.name.Equals("Wind"))
             {
                 Interact(tile);
-                foreach (Sprite s in tile.mySprites)
-                {
-                    s.myState.Spread();//returns sprite to spread to tile... look back at later!!
-                    Debug.WriteLine(s.myState.ToString());
-                }
+                MapTile burnTile1 = pickATile(tiles);
+                Interact(burnTile1);
+                MapTile burnTile2 = pickATile(tiles);
+                Interact(burnTile2);
+                //foreach (Sprite s in tile.mySprites)
+                //{
+                //    Debug.WriteLine(s.myState.ToString());
+                //}
             }
+        }
 
+        public MapTile pickATile(List<MapTile> tiles)
+        {
+            Random rand = new Random();
+            int index = rand.Next(0, tiles.Count);
+            return tiles[index];
         }
     }
 }

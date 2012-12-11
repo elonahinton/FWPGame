@@ -57,7 +57,7 @@ namespace FWPGame.Powers
             }
         }
 
-        public override void PowerCombo(MapTile tile, Power power2)
+        public override void PowerCombo(List<MapTile> tiles, Power power2)
         {
             //not currently implemented
         }
