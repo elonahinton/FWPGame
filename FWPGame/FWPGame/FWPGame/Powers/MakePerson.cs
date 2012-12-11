@@ -26,7 +26,7 @@ namespace FWPGame.Powers
             myPosition = position;
             myMapPosition = mapPosition;
             myXP = 30;
-            
+            name = "MakePerson";
         }
 
         public override void Interact(MapTile tile)

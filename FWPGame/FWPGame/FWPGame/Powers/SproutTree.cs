@@ -26,6 +26,7 @@ namespace FWPGame.Powers
             myPosition = position;
             myMapPosition = mapPosition;
             myXP = 5;
+            name = "SproutTree";
         }
 
         public override void Interact(MapTile tile)

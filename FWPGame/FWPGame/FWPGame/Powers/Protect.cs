@@ -24,6 +24,7 @@ namespace FWPGame.Powers
             myPosition = position;
             myMapPosition = mapPosition;
             myXP = 10;
+            name = "Protect";
         }
 
         public override void Interact(MapTile tile)

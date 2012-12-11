@@ -23,6 +23,7 @@ namespace FWPGame.Powers
             myPosition = position;
             myMapPosition = mapPosition;
             myXP = 15;
+            name = "Electric";
         }
 
         public override void Interact(MapTile tile)

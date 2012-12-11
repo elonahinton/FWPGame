@@ -59,6 +59,7 @@ namespace FWPGame.Engine
         private ArrayList myPowers;
         protected internal List<Power> availablePowers;
         private Power mySelectedPower;
+        private Power myPreviousPower;
         private const int MAX_POWER_HOTKEYS = 10;
 
         protected internal int myLevel;
@@ -76,6 +77,7 @@ namespace FWPGame.Engine
         public Player(ContentManager content, Vector2 mapPos, Vector2 screenSize, Cursor cursor, ArrayList powers)
         {
             mySelectedPower = (Power)powers[0];
+            myPreviousPower = (Power)powers[0];
             myPowers = powers;
             myMapPosition = mapPos;
             myCursor = cursor;
@@ -212,8 +214,14 @@ namespace FWPGame.Engine
                 this.GetType().GetMethod("clearTile"),
                 new object[0]);
 
+            GameAction shift = new GameAction(
+                this, this.GetType().GetMethod("useComboPower"),
+                new object[0]);
+
             InputManager.AddToMouseMap(InputManager.LEFT_BUTTON, powerLMBClick);
             InputManager.AddToMouseMap(InputManager.RIGHT_BUTTON, powerRMBClick);
+            InputManager.AddToKeyboardMap(Keys.LeftShift, shift);
+            InputManager.AddToKeyboardMap(Keys.RightShift, shift);
             #endregion
 
         }
@@ -225,9 +233,14 @@ namespace FWPGame.Engine
         public void powerHotkey(int num)
         {
             if (myPowers.Count > num)
+            {
+                myPreviousPower = mySelectedPower;
                 mySelectedPower = (Power)myPowers[num];
+            }
             else
+            {
                 Debug.WriteLine("That power does not exist.");
+            }
         }
 
         /// <summary>
@@ -254,6 +267,12 @@ namespace FWPGame.Engine
                 MapTile tile = myCursor.getTile();
                 tile.ClearTile();
             }
+        }
+
+        public void useComboPower()
+        {
+            MapTile tile = myCursor.getTile();
+            mySelectedPower.PowerCombo(tile, myPreviousPower);
         }
 
         public void altUsePower(Vector2 mouseClickPosition)

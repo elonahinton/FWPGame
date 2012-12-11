@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using FWPGame.Engine;
 using FWPGame.Items;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace FWPGame.Powers
 {
@@ -25,6 +26,7 @@ namespace FWPGame.Powers
             myPosition = position;
             myMapPosition = mapPosition;
             myXP = 15;
+            name = "Fire";
         }
 
         public override void Interact(MapTile tile)
@@ -61,9 +63,10 @@ namespace FWPGame.Powers
 
         public override void PowerCombo(MapTile tile, Power power2)
         {
-            if (power2.GetType().Name.Equals("Wind"))
+            Debug.Print("fire's power combo");
+            if (power2.name.Equals("Wind"))
             {
-                power2.PowerCombo(tile, this);
+                Debug.WriteLine("power combo reached");
             }
         }
     }

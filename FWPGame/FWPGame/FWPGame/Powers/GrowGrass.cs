@@ -23,6 +23,7 @@ namespace FWPGame.Powers
             myPosition = position;
             myMapPosition = mapPosition;
             myXP = 3;
+            name = "GrowGrass";
         }
 
         public override void Interact(MapTile tile)
