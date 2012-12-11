@@ -211,11 +211,6 @@ namespace FWPGame
             motherTornado = new Tornado(spinTornadoSequence, new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0));
             motherHalo = new Halo(Content.Load<Texture2D>("Protect/bubble"), new Vector2(0, 0), new Vector2(0, 0));
 
-            makePerson = new MakePerson(Content.Load<Texture2D>("people/person"), this, new Vector2(0,0), new Vector2(0, 0));
-            sproutTree = new SproutTree(Content.Load<Texture2D>("UI/treeicon"), this, new Vector2(0, 0), new Vector2(0, 0));
-
-            powers.Add(makePerson);
-            powers.Add(new Electric(Content.Load<Texture2D>("UI/electric"), this, new Vector2(0,0), new Vector2(0,0)));
             //extras and placeholders for now
             //powers.Add(sproutTree);
             //powers.Add(new Fire(Content.Load<Texture2D>("UI/fireicon"), this, new Vector2(0, 0), new Vector2(0, 0)));
