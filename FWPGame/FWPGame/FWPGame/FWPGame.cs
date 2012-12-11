@@ -75,19 +75,23 @@ namespace FWPGame
             InputManager.AddToKeyboardMap(Keys.Escape, closeGame);
 
             GrowGrass grassPower = new GrowGrass(Content.Load<Texture2D>("UI/sprouts"), this, new Vector2(0, 0), new Vector2(0, 0));
-            powers.Add(grassPower);
+
             Rain rainPower = new Rain(Content.Load<Texture2D>("UI/raindrop"), this, new Vector2(0, 0), new Vector2(0, 0));
-            powers.Add(rainPower);
+
             sproutTree = new SproutTree(Content.Load<Texture2D>("UI/treeicon"), this, new Vector2(0, 0), new Vector2(0, 0));
-            powers.Add(sproutTree);
+
             BuildRoad buildRoad = new BuildRoad(Content.Load<Texture2D>("UI/roadicon"), this, new Vector2(0, 0), new Vector2(0, 0));
-            powers.Add(buildRoad);
+
             Fire fire = new Fire(Content.Load<Texture2D>("UI/fireicon"), this, new Vector2(0, 0), new Vector2(0, 0));
-            powers.Add(fire);
+
             BuildHouse housePower = new BuildHouse(Content.Load<Texture2D>("UI/house_icon"), this, new Vector2(0, 0), new Vector2(0, 0));
-            powers.Add(housePower);
+
             Wind windPower = new Wind(Content.Load<Texture2D>("UI/windicon"), this, new Vector2(0,0), new Vector2(0,0));
-            powers.Add(windPower);
+
+            makePerson = new MakePerson(Content.Load<Texture2D>("people/person"), this, new Vector2(0, 0), new Vector2(0, 0));
+
+            Electric electric = new Electric(Content.Load<Texture2D>("UI/electric"), this, new Vector2(0, 0), new Vector2(0, 0));
+
             //Protect protect = new Protect(Content.Load<Texture2D>("UI/protect"), this, new Vector2(0, 0), new Vector2(0, 0));
 
             Dictionary<string, Power> myPowers = new Dictionary<string, Power>();
@@ -95,6 +99,11 @@ namespace FWPGame
             myPowers.Add("sprout", sproutTree);
             myPowers.Add("fire", fire);
             myPowers.Add("house", housePower);
+            myPowers.Add("rain", rainPower);
+            myPowers.Add("road", buildRoad);
+            myPowers.Add("wind", windPower);
+            myPowers.Add("person", makePerson);
+            myPowers.Add("electric", electric);
             
             List<Power> availablePowers = new List<Power>();
             //availablePowers.Add(protect);
@@ -109,8 +118,8 @@ namespace FWPGame
                 new Vector2(0, 0));
 
             player = new Player(Content, map,
-    new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height),
-    cursor, powers);
+                    new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height),
+                    cursor, myPowers);
 
             // TODO: use this.Content to load your game content here
             LoadObjects();

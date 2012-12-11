@@ -22,7 +22,7 @@ namespace FWPGame.Engine
         public Vector2 myMapPosition;
         private Vector2 myVelocity;
         private Vector2 myScreenSize;
-        
+
 
         private float myAngle = 0f;
         private Vector2 myOrigin = new Vector2(0, 0);
@@ -31,7 +31,7 @@ namespace FWPGame.Engine
         protected internal Cursor myCursor;
         protected internal Vector2 myMapSize;
         protected internal Map myMap;
-        private ArrayList myPowers;
+        private Dictionary<string, Power> myPowers;
         protected internal List<Power> availablePowers;
         private Power mySelectedPower;
         private Power myPreviousPower;
@@ -57,11 +57,16 @@ namespace FWPGame.Engine
         private SpriteFont broFont;
         private SpriteFont sisFont;
 
-        public Player(ContentManager content, Map map, Vector2 screenSize, Cursor cursor, ArrayList powers)
+        public Player(ContentManager content, Map map, Vector2 screenSize, Cursor cursor,
+            Dictionary<string, Power> allPowers)
         {
-            mySelectedPower = (Power)powers[0];
-            myPreviousPower = (Power)powers[0];
-            myPowers = powers;
+            availablePowers = new List<Power>();
+            myPowers = allPowers;
+            availablePowers.Add(myPowers["grass"]);
+            mySelectedPower = availablePowers[0];
+            myPreviousPower = availablePowers[0];
+
+
             myMap = map;
             myCursor = cursor;
             myScreenSize = screenSize;
@@ -77,7 +82,7 @@ namespace FWPGame.Engine
             levelFont = content.Load<SpriteFont>("UI/LevelFont");
             myLevel = 0;
             myXP = 0;
-            myXPtoNext = 100;
+            myXPtoNext = 30;
 
             dadGod = content.Load<Texture2D>("gods/DaddyGod");
             broGod = content.Load<Texture2D>("gods/BrotherGod");
@@ -144,17 +149,17 @@ namespace FWPGame.Engine
             iconPos.Y = myScreenSize.Y - 129;
 
 
-            int f = myPowers.Count;
+            int f = availablePowers.Count;
             iconPos.X = (myScreenSize.X / 2) - (129 * (f / 2));
             textPos.X = iconPos.X + 58;
             for (int i = 0; i < f; i++)
             {
-                Power p = (Power)myPowers[i];
+                Power p = availablePowers[i];
                 if (p.Equals(mySelectedPower))
                 {
                     batch.Draw(myIconBG, new Vector2(iconPos.X + 1, iconPos.Y - 1), null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
                     batch.Draw(p.myIcon, iconPos, null, Color.White, myAngle, myOrigin, myScale,
-    SpriteEffects.None, 0f);
+                            SpriteEffects.None, 0f);
                     batch.Draw(myIcon, iconPos, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
                 }
                 else
@@ -303,10 +308,10 @@ namespace FWPGame.Engine
         /// <param name="num"></param>
         public void powerHotkey(int num)
         {
-            if (myPowers.Count > num)
+            if (availablePowers.Count > num)
             {
                 myPreviousPower = mySelectedPower;
-                mySelectedPower = (Power)myPowers[num];
+                mySelectedPower = availablePowers[num];
             }
             else
             {
@@ -333,7 +338,7 @@ namespace FWPGame.Engine
         public void clearTile(Vector2 mouseClickPosition)
         {
             if (mouseClickPosition.X >= 0 && mouseClickPosition.X < myScreenSize.X
-    && mouseClickPosition.Y > 0 && mouseClickPosition.Y < myScreenSize.Y)
+                && mouseClickPosition.Y > 0 && mouseClickPosition.Y < myScreenSize.Y)
             {
                 MapTile tile = myMap.GetTile(myCursor);
                 tile.ClearTile();
@@ -358,28 +363,54 @@ namespace FWPGame.Engine
             if (levelPercent >= 1.0)
             {
                 myLevel += 1;
-                myXPtoNext = myXPtoNext*2;
+                myXPtoNext = myXPtoNext * 2;
                 myXP = 0;
                 levelPercent = 0;
-                if (myLevel % 2 == 0)
-                {
                     switch (myLevel)
                     {
+                        case 1:
+                            {
+                                availablePowers.Add(myPowers["sprout"]);
+                                break;
+                            }
                         case 2:
                             {
+                                availablePowers.Add(myPowers["fire"]);
                                 scene = new BrotherFire(broGod, new Vector2(0, 0), new Vector2(0, 0), broFont, myMap);
+                                break;
+                            }
+                        case 3:
+                            {
+                                availablePowers.Add(myPowers["person"]);
                                 break;
                             }
                         case 4:
                             {
+                                availablePowers.Add(myPowers["road"]);
                                 scene = new SisterTrouble(sisGod, new Vector2(0, 0), new Vector2(0, 0), sisFont, myMap);
+                                break;
+                            }
+                        case 5:
+                            {
+                                availablePowers.Add(myPowers["house"]);
                                 break;
                             }
                         case 6:
                             {
+                                availablePowers.Add(myPowers["rain"]);
+                                break;
+                            }
+                        case 7:
+                            {
+                                availablePowers.Add(myPowers["electric"]);
                                 break;
                             }
                         case 8:
+                            {
+                                availablePowers.Add(myPowers["wind"]);
+                                break;
+                            }
+                        case 9:
                             {
                                 break;
                             }
@@ -388,7 +419,6 @@ namespace FWPGame.Engine
                                 scene = new Ending(dadGod, new Vector2(0, 0), new Vector2(0, 0), dadFont);
                                 break;
                             }
-                    }
                 }
             }
 
