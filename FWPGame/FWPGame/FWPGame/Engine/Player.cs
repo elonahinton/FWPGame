@@ -88,7 +88,7 @@ namespace FWPGame.Engine
             sisFont = content.Load<SpriteFont>("gods/SisterFont");
 
             SetupInput();
-            scene = new Introduction(content.Load<Texture2D>("gods/DaddyGod"), new Vector2(0, 0), new Vector2(0, 0), dadFont);
+            scene = new Introduction(dadGod, new Vector2(0, 0), new Vector2(0, 0), dadFont);
         }
 
         /// <summary>
@@ -359,7 +359,7 @@ namespace FWPGame.Engine
             if (levelPercent >= 1.0)
             {
                 myLevel += 1;
-                myXPtoNext = myXPtoNext*2;
+                //myXPtoNext = myXPtoNext*2;
                 myXP = 0;
                 levelPercent = 0;
                 if (myLevel % 2 == 0)
@@ -368,10 +368,12 @@ namespace FWPGame.Engine
                     {
                         case 2:
                             {
+                                scene = new BrotherFire(broGod, new Vector2(0, 0), new Vector2(0, 0), broFont);
                                 break;
                             }
                         case 4:
                             {
+                                scene = new SisterTrouble(sisGod, new Vector2(0, 0), new Vector2(0, 0), sisFont);
                                 break;
                             }
                         case 6:
@@ -384,6 +386,7 @@ namespace FWPGame.Engine
                             }
                         case 10:
                             {
+                                scene = new Ending(dadGod, new Vector2(0, 0), new Vector2(0, 0), dadFont);
                                 break;
                             }
                     }

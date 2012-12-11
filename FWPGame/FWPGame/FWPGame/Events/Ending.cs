@@ -16,22 +16,20 @@ using FWPGame.Engine;
 
 namespace FWPGame.Events
 {
-    public class Ending : Sprite
+    public class Ending : Event
     {
-        private FWPGame game;
         private bool nextState;
 
-        public Ending(FWPGame game, Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font) :
-            base(texture, position)
+        public Ending(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font) :
+            base(texture, position, mapPosition, font)
         {
             myMapPosition = mapPosition;
             myTexture = texture;
             myPosition = position;
-            this.game = game;
-            this.myState = new CongratsState(this, null, font); //second argument is sound effect, if wanted
+            this.myEventState = new CongratsState(this, null, font); //second argument is sound effect, if wanted
         }
 
-        class CongratsState : State
+        class CongratsState : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -67,19 +65,15 @@ namespace FWPGame.Events
 
             public void skipEvent()
             {
-                ending.myState = new EndingStateOver(this.ending, effect, openingTxt);
+                ending.myEventState = new EndingStateOver(this.ending, effect, openingTxt);
             }
 
-            public void Update(GameTime gameTime)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.ending.nextState)
                 {
-                    ending.myState = new EndingStateOver(this.ending, effect, openingTxt);
+                    ending.myEventState = new EndingStateOver(this.ending, effect, openingTxt);
                 }
-            }
-
-            public void Update(double d, Vector2 v)
-            {
             }
 
             public void Draw(SpriteBatch batch)
@@ -92,14 +86,9 @@ namespace FWPGame.Events
                 //tried to draw father god
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
-
-            public Sprite Spread()
-            {
-                return null;
-            }
         }
 
-        class EndingStateOver : State
+        class EndingStateOver : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -113,21 +102,12 @@ namespace FWPGame.Events
                 this.openingTxt = openingText;
             }
 
-            public void Update(GameTime gameTime)
-            {
-            }
-
-            public void Update(double d, Vector2 v)
+            public void Update(GameTime gameTime, Vector2 v)
             {
             }
 
             public void Draw(SpriteBatch batch)
             {
-            }
-
-            public Sprite Spread()
-            {
-                return null;
             }
         }
     }

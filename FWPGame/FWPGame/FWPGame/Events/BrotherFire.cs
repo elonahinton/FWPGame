@@ -26,7 +26,6 @@ namespace FWPGame.Events
             myMapPosition = mapPosition;
             myTexture = texture;
             myPosition = position;
-            //this.game = game;
             this.myEventState = new BroVisit(this, null, font); //second argument is sound effect, if wanted
         }
 
@@ -43,7 +42,6 @@ namespace FWPGame.Events
                 this.effect = effect;
                 SetUpInput();
                 this.openingTxt = openingText;
-                //Draw();
             }
 
             public void SetUpInput()
@@ -52,24 +50,13 @@ namespace FWPGame.Events
                   this,
                   this.GetType().GetMethod("setNextState"),
                   new object[0]);
-                //GameAction skip = new GameAction(
-                //  this,
-                //  this.GetType().GetMethod("skipEvent"),
-                //  new object[0]);
                 InputManager.AddToKeyboardMap(Keys.Space, next);
-                //InputManager.AddToKeyboardMap(Keys.Tab, skip);
             }
 
             public void setNextState()
             {
                 this.angryBro.nextState = true;
             }
-
-            //don't let them skip event?
-            //public void skipEvent()
-            //{
-            //    angryBro.myState = new EndingStateOver(this.angryBro, effect, openingTxt);
-            //}
 
             public void Update(GameTime gameTime, Vector2 v)
             {
