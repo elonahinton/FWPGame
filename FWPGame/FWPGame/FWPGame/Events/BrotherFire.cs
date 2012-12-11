@@ -99,12 +99,7 @@ namespace FWPGame.Events
                   this,
                   this.GetType().GetMethod("setNextState"),
                   new object[0]);
-                //GameAction skip = new GameAction(
-                //  this,
-                //  this.GetType().GetMethod("skipEvent"),
-                //  new object[0]);
                 InputManager.AddToKeyboardMap(Keys.Space, next);
-                //InputManager.AddToKeyboardMap(Keys.Tab, skip);
             }
 
             public void setNextState()
@@ -128,9 +123,40 @@ namespace FWPGame.Events
 
             public void Draw(SpriteBatch batch)
             {
-                String instructions = "";
-                //draw fireball going into area
+                String instructions = "";                
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
+
+            }
+
+            public List<MapTile> BurnTiles(Map map)
+            {
+                List<MapTile> tiles = new List<MapTile>();
+                int tilesX = (int) (map.mySize.X / map.getMaxTileSize());
+                int tilesY = (int)(map.mySize.Y / map.getMaxTileSize());
+                for (int i = 0; i < tilesX; i++)
+                {
+                    for (int j = 0; j < tilesY; j++)
+                    {
+                        MapTile tile = map.MapTiles[tilesX, tilesY];
+                        if (isBurnable(tile))
+                        {
+                            tiles.Add(tile);
+                        }
+                    }
+                }
+                return tiles;
+            }
+
+            public bool isBurnable(MapTile tile)
+            {
+                foreach (Sprite s in tile.mySprites)
+                {
+                    if (s.name.Equals("House") || s.name.Equals("Tree") || s.name.Equals("Road") || s.name.Equals("Wood"))
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
         }
 
