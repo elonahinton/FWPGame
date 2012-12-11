@@ -121,17 +121,17 @@ namespace FWPGame
             //availablePowers.Add(protect);
             
 
-            cursor = new Cursor(Content.Load<Texture2D>("cursor"), new Vector2(0,0), this);
-            player = new Player(Content, new Vector2(0, 0),
-                new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height),
-                cursor, powers);
-            
+            cursor = new Cursor(Content.Load<Texture2D>("cursor"), new Vector2(0,0));
+
+
 
             map = new Map(Content.Load<Texture2D>("Maps/Mars/marsorbit"),
                 new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height),
-                new Vector2(0, 0),
-                player);
-            worldScale = map.baseScale;
+                new Vector2(0, 0));
+
+            player = new Player(Content, map,
+    new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height),
+    cursor, powers);
 
             // TODO: use this.Content to load your game content here
             LoadObjects();
@@ -173,8 +173,7 @@ namespace FWPGame
             HandleInput();
             Transmorg();
 
-            map.Update(gameTime, worldScale);
-            cursor.Update(gameTime, worldScale);
+            player.Update(gameTime);
             intro.myState.Update(gameTime.TotalGameTime.Milliseconds, worldScale);
             //myApocalypse.Update(gameTime.TotalGameTime.Seconds, player.myMapPosition);
 
@@ -207,9 +206,7 @@ namespace FWPGame
             spriteBatch.Begin();
             // TODO: Add your drawing code here
 
-            map.Draw(spriteBatch);
             player.Draw(spriteBatch);
-            cursor.Draw(spriteBatch);
             intro.Draw(spriteBatch);
             //myApocalypse.Draw(spriteBatch);
             spriteBatch.End();

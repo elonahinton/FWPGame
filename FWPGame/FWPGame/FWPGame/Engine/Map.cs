@@ -15,7 +15,6 @@ namespace FWPGame.Engine
     {
         public const int MAX_TILE_SIZE = 64;
         private Vector2 myScreenSize;
-        private Player myPlayer;
         private MapTile[,] mapTiles;
         public MapTile[,] MapTiles { get { return mapTiles; } }
         private Vector2 myPosition;
@@ -23,7 +22,7 @@ namespace FWPGame.Engine
         private float myAngle = 0f;
         private Vector2 myOrigin = new Vector2(0, 0);
         private Vector2 myScale = new Vector2(1, 1);
-        private Vector2 mySize = new Vector2(0, 0);
+        protected internal Vector2 mySize = new Vector2(0, 0);
 
         public Vector2 baseScale = new Vector2(1, 1);
 
@@ -32,7 +31,7 @@ namespace FWPGame.Engine
             return MAX_TILE_SIZE;
         }
 
-        public Map(Texture2D texture, Vector2 screenSize, Vector2 position, Player player)
+        public Map(Texture2D texture, Vector2 screenSize, Vector2 position)
         {
             /*if (screenSize.X > texture.Width)
             {
@@ -47,24 +46,20 @@ namespace FWPGame.Engine
             myTexture = texture;
             myPosition = position;
             myScreenSize = screenSize;
-            myPlayer = player;
             mySize.X = myTexture.Bounds.Width * myScale.X;
             mySize.Y = myTexture.Bounds.Height * myScale.Y;
-            player.myMapSize = mySize;
             CreateTileGrid(mySize);
         }
 
         /// <summary>
         /// Update the map's relative positions with the player's position
         /// </summary>
-        public void Update(GameTime gameTime, Vector2 worldScale)
+        public void Update(GameTime gameTime, Vector2 playerPosition)
         {
-            myPlayer.Update(gameTime, worldScale);
-            myScale = worldScale;
-            myPosition = -(myPlayer.myMapPosition);
+            myPosition = -(playerPosition);
             foreach (MapTile m in mapTiles)
             {
-                m.Update(gameTime, myPlayer.myMapPosition);
+                m.Update(gameTime, playerPosition);
             }
         }
 
@@ -160,7 +155,7 @@ namespace FWPGame.Engine
         /// </summary>
         /// <param name="gameTime"></param>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch batch)
+        public void Draw(SpriteBatch batch, Vector2 playerPos)
         {
             batch.Draw(myTexture, myPosition,
                    null, Color.White,
@@ -168,10 +163,10 @@ namespace FWPGame.Engine
                    SpriteEffects.None, 0f);
 
             // We only want to render the map tiles that are visible, so we need to find which ones the player can see
-            var x = (int)Math.Floor((myPlayer.myMapPosition.X / (MAX_TILE_SIZE)));
-            var xmax = (int)Math.Floor((myPlayer.myMapPosition.X + myScreenSize.X) / (MAX_TILE_SIZE))+1;
-            var y = (int)Math.Floor((myPlayer.myMapPosition.Y) / (MAX_TILE_SIZE));
-            var ymax = (int)Math.Floor((myPlayer.myMapPosition.Y + myScreenSize.Y) / (MAX_TILE_SIZE))+1;
+            var x = (int)Math.Floor((playerPos.X / (MAX_TILE_SIZE)));
+            var xmax = (int)Math.Floor((playerPos.X + myScreenSize.X) / (MAX_TILE_SIZE))+1;
+            var y = (int)Math.Floor((playerPos.Y) / (MAX_TILE_SIZE));
+            var ymax = (int)Math.Floor((playerPos.Y + myScreenSize.Y) / (MAX_TILE_SIZE))+1;
 
             if (xmax > mapTiles.GetLength(0))
                 xmax = mapTiles.GetLength(0);

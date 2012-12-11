@@ -15,12 +15,10 @@ namespace FWPGame.Engine
 {
     public class Cursor : Sprite
     {
-        private FWPGame myGame;
         private List<Sprite> sprites;
-        public Cursor(Texture2D texture, Vector2 position, FWPGame game) :
+        public Cursor(Texture2D texture, Vector2 position) :
             base(texture, position)
         {
-            myGame = game;
             myTexture = texture;
             myPosition = position;
             SetupInput();
@@ -31,21 +29,12 @@ namespace FWPGame.Engine
         /// Update the map position.
         /// </summary>
         /// <param name="gameTime"></param>
-        public override void Update(GameTime gameTime, Vector2 worldScale)
+        public override void Update(GameTime gameTime, Vector2 playerPos)
         {
-            myMapPosition = myGame.player.myMapPosition + myPosition;
+            myMapPosition = playerPos + myPosition;
             
         }
 
-        /// <summary>
-        /// Get the map to get the tile using itself as a parameter.  Pretty roundabout and silly, but it works..
-        /// #refactorthis
-        /// </summary>
-        /// <returns></returns>
-        public MapTile getTile()
-        {
-            return myGame.map.GetTile(this);
-        }
 
         /// <summary>
         /// Draw the little cursor hand.
@@ -99,23 +88,5 @@ namespace FWPGame.Engine
             myPosition.Y = position.Y - myTexture.Height / 2;
         }
 
-        //1 for zoom in, -1 for zoom out, 0 for reset zoom
-        public void Zoom(int dir)
-        {
-            Vector2 zoomVelocity = new Vector2(0.1f, 0.1f);
-            if (dir == -1 && (myGame.worldScale.X > myGame.map.baseScale.X) && (myGame.worldScale.Y > myGame.map.baseScale.Y))
-            {
-                myGame.worldScale -= zoomVelocity;
-                Debug.WriteLine(myGame.worldScale);
-            }
-            else if (dir == 1)
-            {
-                myGame.worldScale += zoomVelocity;
-            }
-            else if (dir == 0)
-            {
-                myGame.worldScale = myGame.map.baseScale;
-            }
-        }
     }
 }

@@ -21,34 +21,7 @@ namespace FWPGame.Engine
         public Vector2 myMapPosition;
         private Vector2 myVelocity;
         private Vector2 myScreenSize;
-        private bool canGoUp
-        {
-            get
-            {
-                return myMapPosition.Y <= 0 ? false : true;
-            }
-        }
-        private bool canGoLeft
-        {
-            get
-            {
-                return myMapPosition.X <= 0 ? false : true;
-            }
-        }
-        private bool canGoRight
-        {
-            get
-            {
-                return myMapPosition.X + myScreenSize.X + 20 >= myMapSize.X ? false : true;
-            }
-        }
-        private bool canGoDown
-        {
-            get
-            {
-                return myMapPosition.Y + myScreenSize.Y + 20 >= myMapSize.Y ? false : true;
-            }
-        }
+        
 
         private float myAngle = 0f;
         private Vector2 myOrigin = new Vector2(0, 0);
@@ -56,6 +29,7 @@ namespace FWPGame.Engine
 
         protected internal Cursor myCursor;
         protected internal Vector2 myMapSize;
+        protected internal Map myMap;
         private ArrayList myPowers;
         protected internal List<Power> availablePowers;
         private Power mySelectedPower;
@@ -74,15 +48,17 @@ namespace FWPGame.Engine
         private Texture2D myIconBG;
         private SpriteFont myFont;
 
-        public Player(ContentManager content, Vector2 mapPos, Vector2 screenSize, Cursor cursor, ArrayList powers)
+        public Player(ContentManager content, Map map, Vector2 screenSize, Cursor cursor, ArrayList powers)
         {
             mySelectedPower = (Power)powers[0];
             myPreviousPower = (Power)powers[0];
             myPowers = powers;
-            myMapPosition = mapPos;
+            myMap = map;
             myCursor = cursor;
             myScreenSize = screenSize;
             myVelocity = new Vector2(0, 0);
+            myMapPosition = new Vector2(0, 0);
+            myMapSize = myMap.mySize;
 
             myIcon = content.Load<Texture2D>("UI/icon");
             myIconBG = content.Load<Texture2D>("UI/iconBG");
@@ -103,7 +79,7 @@ namespace FWPGame.Engine
         /// Check for cursor location and decide whether to move the player via mouse scrolling.  
         /// </summary>
         /// <param name="elapsedTime">game time elapsed</param>
-        public void Update(GameTime gameTime, Vector2 worldScale)
+        public void Update(GameTime gameTime)
         {
             myMapPosition += myVelocity;
             myVelocity = new Vector2(0, 0);
@@ -124,6 +100,74 @@ namespace FWPGame.Engine
             {
                 MoveRight();
             }
+            myMap.Update(gameTime, myMapPosition);
+            myCursor.Update(gameTime, myMapPosition);
+        }
+
+        /// <summary>
+        /// Draw the pseudo-UI - the power hotkeys - with a white fill-in for the selected one.
+        /// </summary>
+        /// <param name="batch"></param>
+        public void Draw(SpriteBatch batch)
+        {
+
+            myMap.Draw(batch, myMapPosition);
+            myCursor.Draw(batch);
+
+            #region Power Hotkeys
+            Vector2 textPos = new Vector2(0, 0);
+            textPos.Y = myScreenSize.Y - 25;
+            Vector2 iconPos = new Vector2(0, 0);
+            iconPos.Y = myScreenSize.Y - 129;
+
+
+            int f = myPowers.Count;
+            iconPos.X = (myScreenSize.X / 2) - (129 * (f / 2));
+            textPos.X = iconPos.X + 58;
+            for (int i = 0; i < f; i++)
+            {
+                Power p = (Power)myPowers[i];
+                if (p.Equals(mySelectedPower))
+                {
+                    batch.Draw(myIconBG, new Vector2(iconPos.X + 1, iconPos.Y - 1), null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
+                    batch.Draw(p.myIcon, iconPos, null, Color.White, myAngle, myOrigin, myScale,
+    SpriteEffects.None, 0f);
+                    batch.Draw(myIcon, iconPos, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    batch.Draw(myIconBG, new Vector2(iconPos.X + 1, iconPos.Y - 1), null, Color.Gray, myAngle, myOrigin, myScale,
+                    SpriteEffects.None, 0f);
+                    batch.Draw(p.myIcon, iconPos, null, Color.White, myAngle, myOrigin, myScale,
+                        SpriteEffects.None, 0f);
+                    batch.Draw(myIcon, iconPos, null, Color.Gray, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
+                }
+                batch.DrawString(myFont, "" + (i + 1), textPos, Color.Black);
+                iconPos.X += 129;
+                textPos.X += 129;
+            }
+            #endregion
+
+            #region Exp Bar
+
+            Vector2 barLoc = new Vector2((myScreenSize.X / 2) - (myXPbar.Width / 2), (iconPos.Y - myXPbar.Height - 10));
+            batch.Draw(myXPbar, barLoc, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
+
+            Vector2 blockLoc = new Vector2(barLoc.X + 3, barLoc.Y + 3);
+
+            for (int t = 0; t < levelProgress; t++)
+            {
+                float xOffset = blockLoc.X + (8 * t);
+                batch.Draw(myXPblock, new Vector2(xOffset, blockLoc.Y), null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
+            }
+
+            batch.Draw(myXPbar, barLoc, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
+
+            Vector2 levelLoc = new Vector2(barLoc.X + (myXPbar.Width / 2), barLoc.Y - 40);
+            batch.DrawString(levelFont, "" + myLevel, levelLoc, Color.Black);
+
+            #endregion
+
 
         }
 
@@ -252,7 +296,7 @@ namespace FWPGame.Engine
             if (mouseClickPosition.X >= 0 && mouseClickPosition.X < myScreenSize.X
                 && mouseClickPosition.Y > 0 && mouseClickPosition.Y < myScreenSize.Y)
             {
-                MapTile tile = myCursor.getTile();
+                MapTile tile = myMap.GetTile(myCursor);
                 mySelectedPower.Interact(tile);
                 myXP += mySelectedPower.myXP;
                 levelProgress = getLevelProgress();
@@ -264,14 +308,14 @@ namespace FWPGame.Engine
             if (mouseClickPosition.X >= 0 && mouseClickPosition.X < myScreenSize.X
     && mouseClickPosition.Y > 0 && mouseClickPosition.Y < myScreenSize.Y)
             {
-                MapTile tile = myCursor.getTile();
+                MapTile tile = myMap.GetTile(myCursor);
                 tile.ClearTile();
             }
         }
 
         public void useComboPower()
         {
-            MapTile tile = myCursor.getTile();
+            MapTile tile = myMap.GetTile(myCursor);
             mySelectedPower.PowerCombo(tile, myPreviousPower);
         }
 
@@ -280,66 +324,7 @@ namespace FWPGame.Engine
             // empty for now
         }
 
-        /// <summary>
-        /// Draw the pseudo-UI - the power hotkeys - with a white fill-in for the selected one.
-        /// </summary>
-        /// <param name="batch"></param>
-        public void Draw(SpriteBatch batch)
-        {
-            Vector2 textPos = new Vector2(0, 0);
-            textPos.Y = myScreenSize.Y - 25;
-            Vector2 iconPos = new Vector2(0,0);
-            iconPos.Y = myScreenSize.Y - 129;
 
-
-            int f = myPowers.Count;
-            iconPos.X = (myScreenSize.X / 2) - (129*(f/2));
-            textPos.X = iconPos.X + 58;
-            for (int i = 0; i < f; i++)
-            {
-                Power p = (Power)myPowers[i];
-                if (p.Equals(mySelectedPower))
-                {
-                    batch.Draw(myIconBG, new Vector2(iconPos.X+1, iconPos.Y-1), null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
-                    batch.Draw(p.myIcon, iconPos, null, Color.White, myAngle, myOrigin, myScale,
-    SpriteEffects.None, 0f);
-                    batch.Draw(myIcon, iconPos, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
-                }
-                else
-                {
-                    batch.Draw(myIconBG, new Vector2(iconPos.X + 1, iconPos.Y-1), null, Color.Gray, myAngle, myOrigin, myScale,
-                    SpriteEffects.None, 0f);
-                batch.Draw(p.myIcon, iconPos, null, Color.White, myAngle, myOrigin, myScale,
-                    SpriteEffects.None, 0f);
-                batch.Draw(myIcon, iconPos, null, Color.Gray, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
-                }
-                batch.DrawString(myFont, "" + (i+1), textPos, Color.Black);
-                iconPos.X += 129;
-                textPos.X += 129;
-            }
-
-            #region Exp Bar
-
-            Vector2 barLoc = new Vector2((myScreenSize.X / 2) - (myXPbar.Width / 2), (iconPos.Y - myXPbar.Height - 10));
-            batch.Draw(myXPbar, barLoc, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
-
-            Vector2 blockLoc = new Vector2(barLoc.X + 3, barLoc.Y + 3);
-
-            for (int t = 0; t < levelProgress; t++)
-            {
-                float xOffset = blockLoc.X + (8 * t);
-                batch.Draw(myXPblock, new Vector2(xOffset, blockLoc.Y), null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
-            }
-
-            batch.Draw(myXPbar, barLoc, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
-
-            Vector2 levelLoc = new Vector2(barLoc.X + (myXPbar.Width / 2), barLoc.Y - 40);
-            batch.DrawString(levelFont, "" + myLevel, levelLoc, Color.Black);
-
-            #endregion
-
-
-        }
 
         private int getLevelProgress()
         {
@@ -354,6 +339,36 @@ namespace FWPGame.Engine
 
             return (int)(levelPercent * 100);
         }
-        
+
+        #region Smelly properties...
+        private bool canGoUp
+        {
+            get
+            {
+                return myMapPosition.Y <= 0 ? false : true;
+            }
+        }
+        private bool canGoLeft
+        {
+            get
+            {
+                return myMapPosition.X <= 0 ? false : true;
+            }
+        }
+        private bool canGoRight
+        {
+            get
+            {
+                return myMapPosition.X + myScreenSize.X + 20 >= myMapSize.X ? false : true;
+            }
+        }
+        private bool canGoDown
+        {
+            get
+            {
+                return myMapPosition.Y + myScreenSize.Y + 20 >= myMapSize.Y ? false : true;
+            }
+        }
+        #endregion
     }
 }
