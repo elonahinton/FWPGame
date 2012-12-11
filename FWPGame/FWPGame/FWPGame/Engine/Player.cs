@@ -171,8 +171,8 @@ namespace FWPGame.Engine
                     batch.Draw(myIcon, iconPos, null, Color.Gray, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
                 }
                 batch.DrawString(myFont, "" + (i + 1), textPos, Color.Black);
-                iconPos.X += 129;
-                textPos.X += 129;
+                iconPos.X += 128;
+                textPos.X += 128;
             }
             #endregion
 
