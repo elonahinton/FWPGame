@@ -21,13 +21,13 @@ namespace FWPGame.Events
         private FWPGame game;
         private bool nextState;
 
-        public BrotherFire(FWPGame game, Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font) :
+        public BrotherFire(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
             myTexture = texture;
             myPosition = position;
-            this.game = game;
+            //this.game = game;
             this.myState = new BroVisit(this, null, font); //second argument is sound effect, if wanted
         }
 
@@ -44,6 +44,7 @@ namespace FWPGame.Events
                 this.effect = effect;
                 SetUpInput();
                 this.openingTxt = openingText;
+                //Draw();
             }
 
             public void SetUpInput()
