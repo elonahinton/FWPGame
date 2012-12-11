@@ -387,7 +387,7 @@ namespace FWPGame.Engine
                         case 4:
                             {
                                 availablePowers.Add(myPowers["house"]);
-                                scene = new SisterTrouble(sisGod, new Vector2(0, 0), new Vector2(0, 0), sisFont, myMap);
+                                scene = new SisterTrouble(sisGod, new Vector2(0, 0), new Vector2(0, 0), sisFont, myMap, myPowers["grass"], myPowers["house"]);
                                 break;
                             }
                         case 5:

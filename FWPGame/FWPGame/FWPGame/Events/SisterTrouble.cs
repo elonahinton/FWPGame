@@ -23,14 +23,18 @@ namespace FWPGame.Events
     {
         private bool nextState;
         private Map myMap;
+        private Power grass;
+        private Power house;
 
-        public SisterTrouble(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font, Map aMap) :
+        public SisterTrouble(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font, Map aMap, Power aGrass, Power aHouse) :
             base(texture, position, mapPosition, font)
         {
             myMapPosition = mapPosition;
             myTexture = texture;
             myPosition = position;
             myMap = aMap;
+            this.grass = aGrass;
+            this.house = aHouse;
             this.myEventState = new SisterVisit(this, null, font); //second argument is sound effect, if wanted
         }
 
@@ -92,19 +96,11 @@ namespace FWPGame.Events
             public TroubleState(SisterTrouble angrySisterEvent, SoundEffect soundEffect, SpriteFont sisterText)
             {
                 this.angrySis = angrySisterEvent;
+                tileToBuild = TileToBuild(angrySis.myMap);
                 this.angrySis.nextState = false;
                 this.effect = soundEffect;
-                SetUpInput();
                 this.sisterTxt = sisterText;
-            }
-
-            public void SetUpInput()
-            {
-                GameAction next = new GameAction(
-                  this,
-                  this.GetType().GetMethod("setNextState"),
-                  new object[0]);
-                InputManager.AddToKeyboardMap(Keys.Space, next);
+                BuildTile(tileToBuild);
             }
 
             public void setNextState()
@@ -123,16 +119,13 @@ namespace FWPGame.Events
             public void Draw(SpriteBatch batch)
             {
                 String instructions = "";
-                //draw something small happen
                 batch.DrawString(sisterTxt, instructions, new Vector2(0, 0), Color.White);
             }
 
             public void BuildTile(MapTile tile)
             {
-                GrowGrass grass = new GrowGrass(angrySis.myTexture, null, new Vector2(0, 0), new Vector2(0, 0));
-                grass.Interact(tile);
-                BuildHouse house = new BuildHouse(angrySis.myTexture, null, new Vector2(0, 0), new Vector2(0, 0));
-                house.Interact(tile);
+                angrySis.grass.Interact(tile);
+                angrySis.house.Interact(tile);
                 foreach (Sprite s in tile.mySprites)
                 {
                     if (s.name.Equals("House"))
@@ -144,7 +137,7 @@ namespace FWPGame.Events
                 setNextState();
             }
 
-            public MapTile BurnTiles(Map map)
+            public MapTile TileToBuild(Map map)
             {
                 List<MapTile> tiles = new List<MapTile>();
                 int tilesX = map.MapTiles.GetLength(0);
@@ -217,6 +210,7 @@ namespace FWPGame.Events
                                       "your sister learn how to build a house!\n" +
                                       "You will be a good fledgling when your time comes!\n" +
                                       "Hmmm... It looks as though this one was not done too well...\n" +
+                                      "Make sure you know where you are placing things!" +
                                       "Here, you should probably take these insructions with you!\n\n" +
                                       "Not right!?! And I do not get to keep the instructions? HMPH!!";
                 //draw sister and father
