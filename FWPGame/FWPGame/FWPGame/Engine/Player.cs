@@ -178,7 +178,7 @@ namespace FWPGame.Engine
 
             #region Exp Bar
 
-            Vector2 barLoc = new Vector2((myScreenSize.X / 2) - (myXPbar.Width / 2), (iconPos.Y - myXPbar.Height - 10));
+            Vector2 barLoc = new Vector2((myScreenSize.X / 2) - (myXPbar.Width / 2), (iconPos.Y - myXPbar.Height));
             batch.Draw(myXPbar, barLoc, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
 
             Vector2 blockLoc = new Vector2(barLoc.X + 3, barLoc.Y + 3);
@@ -192,7 +192,7 @@ namespace FWPGame.Engine
             batch.Draw(myXPbar, barLoc, null, Color.White, myAngle, myOrigin, myScale, SpriteEffects.None, 0f);
 
             Vector2 levelLoc = new Vector2(barLoc.X + (myXPbar.Width / 2), barLoc.Y - 40);
-            batch.DrawString(levelFont, "" + myLevel, levelLoc, Color.Black);
+            batch.DrawString(levelFont, "Lv" + myLevel, levelLoc, Color.Purple);
 
             if (scene != null)
             {
