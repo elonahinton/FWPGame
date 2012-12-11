@@ -386,13 +386,13 @@ namespace FWPGame.Engine
                             }
                         case 4:
                             {
-                                availablePowers.Add(myPowers["road"]);
+                                availablePowers.Add(myPowers["house"]);
                                 scene = new SisterTrouble(sisGod, new Vector2(0, 0), new Vector2(0, 0), sisFont, myMap);
                                 break;
                             }
                         case 5:
                             {
-                                availablePowers.Add(myPowers["house"]);
+                                availablePowers.Add(myPowers["road"]);
                                 break;
                             }
                         case 6:
