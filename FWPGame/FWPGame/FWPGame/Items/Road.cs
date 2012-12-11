@@ -159,7 +159,7 @@ namespace FWPGame.Items
 
 
         // The Village State
-        class VillageState : State
+        public class VillageState : State
         {
             private Road road;
 

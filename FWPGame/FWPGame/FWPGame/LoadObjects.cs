@@ -195,9 +195,16 @@ namespace FWPGame
             myGrass = new Grass(Content.Load<Texture2D>("grass"), new Vector2(0, 0), new Vector2(0, 0),
                 burningSequence, Content.Load<Texture2D>("burntGrass"), firePlay);
 
+            myRoad = new Road(Content.Load<Texture2D>("infrastructure/dirtRoad"),
+                new Vector2(0, 0), new Vector2(0, 0), burningSequence,
+                Content.Load<Texture2D>("infrastructure/burntTown"), firePlay,
+                Content.Load<Texture2D>("infrastructure/highway"),
+                Content.Load<Texture2D>("infrastructure/village"),
+                Content.Load<Texture2D>("infrastructure/city"));
+
             motherHouse = new House(Content.Load<Texture2D>("house/house"), new Vector2(0, 0), new Vector2(0, 0),
                 burnHouseSequence, Content.Load<Texture2D>("house/houseBurnt"), firePlay, 
-                Content.Load<Texture2D>("house/houseLit"));
+                Content.Load<Texture2D>("house/houseLit"), myRoad);
 
             motherWood = new Wood(Content.Load<Texture2D>("wood/logs"), new Vector2(0, 0), new Vector2(0, 0),
                 fellTree, burningSequence, Content.Load<Texture2D>("wood/logsBurnt"), firePlay, motherHouse);

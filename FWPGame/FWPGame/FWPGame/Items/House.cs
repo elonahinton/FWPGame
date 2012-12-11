@@ -22,9 +22,10 @@ namespace FWPGame.Items
         private Texture2D myBurnt;
         private SoundEffectInstance myPlay;
         private Texture2D myLit;
+        private Road myRoad;
 
         public House(Texture2D texture, Vector2 position, Vector2 mapPosition, Texture2D[] animateSequence, Texture2D burnt,
-            SoundEffectInstance firePlay, Texture2D lit) :
+            SoundEffectInstance firePlay, Texture2D lit, Road road) :
             base(texture, position)
         {
             myMapPosition = mapPosition;
@@ -35,13 +36,14 @@ namespace FWPGame.Items
             myBurnt = burnt;
             myPlay = firePlay;
             myLit = lit;
+            myRoad = road;
             myState = new RegularState(this);
         }
 
         public House Clone()
         {
             return new House(this.myTexture, new Vector2(0, 0), new Vector2(0, 0),
-                myAnimateSequence, myBurnt, myPlay, myLit);
+                myAnimateSequence, myBurnt, myPlay, myLit, myRoad);
         }
 
 
@@ -111,6 +113,15 @@ namespace FWPGame.Items
             myAnimate.AddFrame(0, 2900);
             myAnimate.AddFrame(9, 1000);
         }
+
+
+        public override Sprite Transform()
+        {
+            Road newVillage = myRoad.Clone();
+            newVillage.myState = new Road.VillageState(newVillage);
+            return newVillage;
+        }
+
 
 
         // The Regular State
