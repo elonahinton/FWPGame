@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using FWPGame.Powers;
+using FWPGame.Events;
 
 namespace FWPGame.Engine
 {
@@ -48,6 +49,14 @@ namespace FWPGame.Engine
         private Texture2D myIconBG;
         private SpriteFont myFont;
 
+        private Event scene;
+        private Texture2D dadGod;
+        private Texture2D broGod;
+        private Texture2D sisGod;
+        private SpriteFont dadFont;
+        private SpriteFont broFont;
+        private SpriteFont sisFont;
+
         public Player(ContentManager content, Map map, Vector2 screenSize, Cursor cursor, ArrayList powers)
         {
             mySelectedPower = (Power)powers[0];
@@ -70,7 +79,16 @@ namespace FWPGame.Engine
             myXP = 0;
             myXPtoNext = 100;
 
+            dadGod = content.Load<Texture2D>("gods/DaddyGod");
+            broGod = content.Load<Texture2D>("gods/BrotherGod");
+            sisGod = content.Load<Texture2D>("gods/SisterGod");
+
+            dadFont = content.Load<SpriteFont>("gods/DaddyFont");
+            broFont = content.Load<SpriteFont>("gods/BrotherFont");
+            sisFont = content.Load<SpriteFont>("gods/SisterFont");
+
             SetupInput();
+            scene = new Introduction(content.Load<Texture2D>("gods/DaddyGod"), new Vector2(0, 0), new Vector2(0, 0), dadFont);
         }
 
         /// <summary>
@@ -102,6 +120,11 @@ namespace FWPGame.Engine
             }
             myMap.Update(gameTime, myMapPosition);
             myCursor.Update(gameTime, myMapPosition);
+
+            if (scene != null)
+            {
+                scene.myEventState.Update(gameTime, myMapPosition);
+            }
         }
 
         /// <summary>
@@ -166,6 +189,10 @@ namespace FWPGame.Engine
             Vector2 levelLoc = new Vector2(barLoc.X + (myXPbar.Width / 2), barLoc.Y - 40);
             batch.DrawString(levelFont, "" + myLevel, levelLoc, Color.Black);
 
+            if (scene != null)
+            {
+                scene.myEventState.Draw(batch);
+            }
             #endregion
 
 
@@ -335,6 +362,32 @@ namespace FWPGame.Engine
                 myXPtoNext = myXPtoNext*2;
                 myXP = 0;
                 levelPercent = 0;
+                if (myLevel % 2 == 0)
+                {
+                    switch (myLevel)
+                    {
+                        case 2:
+                            {
+                                break;
+                            }
+                        case 4:
+                            {
+                                break;
+                            }
+                        case 6:
+                            {
+                                break;
+                            }
+                        case 8:
+                            {
+                                break;
+                            }
+                        case 10:
+                            {
+                                break;
+                            }
+                    }
+                }
             }
 
             return (int)(levelPercent * 100);

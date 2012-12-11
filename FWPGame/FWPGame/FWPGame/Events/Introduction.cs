@@ -16,22 +16,20 @@ using FWPGame.Engine;
 
 namespace FWPGame.Events
 {
-    public class Introduction : Sprite
+    public class Introduction : Event
     {
-        private FWPGame game;
         private bool nextState;
 
-        public Introduction(FWPGame game, Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font) :
-            base(texture, position)
+        public Introduction(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font) :
+            base(texture, position, mapPosition, font)
         {
             myMapPosition = mapPosition;
             myTexture = texture;
             myPosition = position;
-            this.game = game;
-            this.myState = new IntroState1(this, null, font); //second argument is sound effect, if wanted
+            this.myEventState = new IntroState1(this, null, font); //second argument is sound effect, if wanted
         }
 
-        class IntroState1 : State
+        class IntroState1 : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -39,6 +37,7 @@ namespace FWPGame.Events
 
             public IntroState1(Introduction intro, SoundEffect effect, SpriteFont openingText)
             {
+                Debug.WriteLine("in intro state 1");
                 this.intro = intro;
                 this.intro.nextState = false;
                 this.effect = effect;
@@ -67,14 +66,15 @@ namespace FWPGame.Events
 
             public void skipEvent()
             {
-                intro.myState = new IntroStateOver(this.intro, effect, openingTxt);
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
             }
 
-            public void Update(double elapsedTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.intro.nextState)
                 {
-                    intro.myState = new IntroState2(this.intro, effect, openingTxt);
+                    Debug.WriteLine("leaving intro state 1");
+                    intro.myEventState = new IntroState2(this.intro, effect, openingTxt);
                 }
             }
 
@@ -89,14 +89,9 @@ namespace FWPGame.Events
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
 
-            public Sprite Spread()
-            {
-                return null;
-            }
-
         }
 
-        class IntroState2 : State
+        class IntroState2 : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -132,14 +127,14 @@ namespace FWPGame.Events
 
             public void skipEvent()
             {
-                intro.myState = new IntroStateOver(this.intro, effect, openingTxt);
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
             }
 
-            public void Update(double GameTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.intro.nextState)
                 {
-                    intro.myState = new IntroState3(this.intro, effect, openingTxt);
+                    intro.myEventState = new IntroState3(this.intro, effect, openingTxt);
                 }
             }
 
@@ -153,14 +148,9 @@ namespace FWPGame.Events
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
 
-            public Sprite Spread()
-            {
-                return null;
-            }
-
         }
 
-        class IntroState3 : State
+        class IntroState3 : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -196,14 +186,14 @@ namespace FWPGame.Events
 
             public void skipEvent()
             {
-                intro.myState = new IntroStateOver(this.intro, effect, openingTxt);
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
             }
 
-            public void Update(double GameTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.intro.nextState)
                 {
-                    intro.myState = new IntroState4(this.intro, effect, openingTxt);
+                    intro.myEventState = new IntroState4(this.intro, effect, openingTxt);
                 }
             }
 
@@ -219,14 +209,9 @@ namespace FWPGame.Events
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
 
-            public Sprite Spread()
-            {
-                return null;
-            }
-
         }
 
-        class IntroState4 : State
+        class IntroState4 : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -262,14 +247,14 @@ namespace FWPGame.Events
 
             public void skipEvent()
             {
-                intro.myState = new IntroStateOver(this.intro, effect, openingTxt);
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
             }
 
-            public void Update(double GameTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.intro.nextState)
                 {
-                    intro.myState = new IntroState5(this.intro, effect, openingTxt);
+                    intro.myEventState = new IntroState5(this.intro, effect, openingTxt);
                 }
             }
 
@@ -285,14 +270,9 @@ namespace FWPGame.Events
                 //want to draw broGod and sis god
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
-
-            public Sprite Spread()
-            {
-                return null;
-            }
         }
 
-        class IntroState5 : State
+        class IntroState5 : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -328,14 +308,14 @@ namespace FWPGame.Events
 
             public void skipEvent()
             {
-                intro.myState = new IntroStateOver(this.intro, effect, openingTxt);
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
             }
 
-            public void Update(double GameTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.intro.nextState)
                 {
-                    intro.myState = new IntroState6(this.intro, effect, openingTxt);
+                    intro.myEventState = new IntroState6(this.intro, effect, openingTxt);
                 }
             }
 
@@ -355,14 +335,9 @@ namespace FWPGame.Events
                 //want to draw dad god, broGod and sis god
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
-
-            public Sprite Spread()
-            {
-                return null;
-            }
         }
 
-        class IntroState6 : State
+        class IntroState6 : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -398,14 +373,14 @@ namespace FWPGame.Events
 
             public void skipEvent()
             {
-                intro.myState = new IntroStateOver(this.intro, effect, openingTxt);
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
             }
 
-            public void Update(double GameTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.intro.nextState)
                 {
-                    intro.myState = new IntroStateOver(this.intro, effect, openingTxt);
+                    intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
                 }
             }
 
@@ -429,7 +404,7 @@ namespace FWPGame.Events
             }
         }
 
-        class IntroStateOver : State
+        class IntroStateOver : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -443,17 +418,12 @@ namespace FWPGame.Events
                 this.openingTxt = openingText;
             }
 
-            public void Update(double GameTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
             }
 
             public void Draw(SpriteBatch batch)
             {
-            }
-
-            public Sprite Spread()
-            {
-                return null;
             }
         }
     }

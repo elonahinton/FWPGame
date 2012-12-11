@@ -16,22 +16,21 @@ using FWPGame.Engine;
 
 namespace FWPGame.Events
 {
-    public class BrotherFire : Sprite
+    public class BrotherFire : Event
     {
-        private FWPGame game;
         private bool nextState;
 
         public BrotherFire(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font) :
-            base(texture, position)
+            base(texture, position, mapPosition, font)
         {
             myMapPosition = mapPosition;
             myTexture = texture;
             myPosition = position;
             //this.game = game;
-            this.myState = new BroVisit(this, null, font); //second argument is sound effect, if wanted
+            this.myEventState = new BroVisit(this, null, font); //second argument is sound effect, if wanted
         }
 
-        class BroVisit : State
+        class BroVisit : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -72,11 +71,11 @@ namespace FWPGame.Events
             //    angryBro.myState = new EndingStateOver(this.angryBro, effect, openingTxt);
             //}
 
-            public void Update(double elapsedTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.angryBro.nextState)
                 {
-                    this.angryBro.myState = new FireballState(this.angryBro, effect, openingTxt);
+                    this.angryBro.myEventState = new FireballState(this.angryBro, effect, openingTxt);
                 }
             }
 
@@ -90,14 +89,9 @@ namespace FWPGame.Events
                 //tried to draw brother god
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
-
-            public Sprite Spread()
-            {
-                return null;
-            }
         }
 
-        class FireballState : State
+        class FireballState : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -137,11 +131,11 @@ namespace FWPGame.Events
             //    angryBro.myState = new EndingStateOver(this.angryBro, effect, openingTxt);
             //}
 
-            public void Update(double elapsedTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.angryBro.nextState)
                 {
-                    angryBro.myState = new LeaveState(this.angryBro, effect, openingTxt);
+                    angryBro.myEventState = new LeaveState(this.angryBro, effect, openingTxt);
                 }
             }
 
@@ -151,14 +145,9 @@ namespace FWPGame.Events
                 //draw fireball going into area
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
-
-            public Sprite Spread()
-            {
-                return null;
-            }
         }
 
-        class LeaveState : State
+        class LeaveState : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -198,11 +187,11 @@ namespace FWPGame.Events
             //    angryBro.myState = new EndingStateOver(this.angryBro, effect, openingTxt);
             //}
 
-            public void Update(double elapsedTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.angryBro.nextState)
                 {
-                    angryBro.myState = new EndState(this.angryBro, effect, openingTxt);
+                    angryBro.myEventState = new EndState(this.angryBro, effect, openingTxt);
                 }
             }
 
@@ -212,14 +201,9 @@ namespace FWPGame.Events
                 //draw brother
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
-
-            public Sprite Spread()
-            {
-                return null;
-            }
         }
 
-        class EndState : State
+        class EndState : EventState
         {
             private SoundEffect effect;
             private SpriteFont openingTxt;
@@ -233,17 +217,12 @@ namespace FWPGame.Events
                 this.openingTxt = openingText;
             }
 
-            public void Update(double elapsedTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime, Vector2 v)
             {
             }
 
             public void Draw(SpriteBatch batch)
             {
-            }
-
-            public Sprite Spread()
-            {
-                return null;
             }
         }
     }

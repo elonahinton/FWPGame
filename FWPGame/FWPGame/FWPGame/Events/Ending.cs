@@ -70,12 +70,16 @@ namespace FWPGame.Events
                 ending.myState = new EndingStateOver(this.ending, effect, openingTxt);
             }
 
-            public void Update(double elapsedTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime)
             {
                 if (this.ending.nextState)
                 {
                     ending.myState = new EndingStateOver(this.ending, effect, openingTxt);
                 }
+            }
+
+            public void Update(double d, Vector2 v)
+            {
             }
 
             public void Draw(SpriteBatch batch)
@@ -109,7 +113,11 @@ namespace FWPGame.Events
                 this.openingTxt = openingText;
             }
 
-            public void Update(double GameTime, Vector2 playerMapPos)
+            public void Update(GameTime gameTime)
+            {
+            }
+
+            public void Update(double d, Vector2 v)
             {
             }
 
