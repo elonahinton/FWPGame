@@ -197,7 +197,7 @@ namespace FWPGame.Events
 
             public void Draw(SpriteBatch batch)
             {
-                String instructions = "Hey! What about me! I want to become a fully fledge god too!" +
+                String instructions = "Hey! What about me! I want to become a fully fledged god too!" +
                                       "\n\nYes, now.  You will be given this opportunity as well" +
                                       "\n once you are of age.  Your time will come." +
                                       "\n\nBut that is not fair! Just because I am the youngest fledgling-" +

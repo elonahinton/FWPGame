@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using FWPGame.Engine;
 using FWPGame.Items;
 using System.Collections;
+using System.Diagnostics;
 
 namespace FWPGame.Powers
 {
@@ -26,10 +27,18 @@ namespace FWPGame.Powers
             name = "GrowGrass";
         }
 
+        //only grow grass on empty tiles
         public override void Interact(MapTile tile)
         {
-            tile.ClearTile();
-            tile.Add(game.myGrass.Clone());            
+            if (tile.mySprites.Count == 0)
+            {
+                myXP = 3;
+                tile.Add(game.myGrass.Clone());
+            }
+            else
+            {
+                myXP = 0;
+            }
         }
 
         public override void PowerCombo(List<MapTile> tiles, Power power2)
