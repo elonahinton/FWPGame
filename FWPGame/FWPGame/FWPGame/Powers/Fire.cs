@@ -63,11 +63,16 @@ namespace FWPGame.Powers
 
         public override void PowerCombo(MapTile tile, Power power2)
         {
-            Debug.Print("fire's power combo");
             if (power2.name.Equals("Wind"))
             {
-                Debug.WriteLine("power combo reached");
+                Interact(tile);
+                foreach (Sprite s in tile.mySprites)
+                {
+                    s.myState.Spread();//returns sprite to spread to tile... look back at later!!
+                    Debug.WriteLine(s.myState.ToString());
+                }
             }
+
         }
     }
 }

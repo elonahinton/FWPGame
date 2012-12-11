@@ -34,7 +34,6 @@ namespace FWPGame.Powers
 
         public override void PowerCombo(MapTile tile, Power power2)
         {
-            Debug.Print("wind's power combo");
             if (power2.name.Equals("Fire"))
             {
                 power2.PowerCombo(tile, this);

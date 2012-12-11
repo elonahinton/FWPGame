@@ -173,6 +173,11 @@ namespace FWPGame.Items
                         house.myOrigin, house.myScale,
                         SpriteEffects.None, 0f);
             }
+
+            public override string ToString()
+            {
+                return "BurnState";
+            }
         }
 
         // The Burnt State
