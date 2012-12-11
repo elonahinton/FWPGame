@@ -380,7 +380,7 @@ namespace FWPGame.Events
             {
                 if (this.intro.nextState)
                 {
-                    intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
+                    intro.myEventState = new Instructions1(this.intro, effect, openingTxt);
                 }
             }
 
@@ -397,10 +397,301 @@ namespace FWPGame.Events
                 //want to draw dad god
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
+        }
 
-            public Sprite Spread()
+        class Instructions1 : EventState
+        {
+            private SoundEffect effect;
+            private SpriteFont openingTxt;
+            private Introduction intro;
+
+            public Instructions1(Introduction intro, SoundEffect effect, SpriteFont openingText)
             {
-                return null;
+                this.intro = intro;
+                intro.nextState = false;
+                this.effect = effect;
+                SetUpInput();
+                this.openingTxt = openingText;
+            }
+
+            public void SetUpInput()
+            {
+                GameAction next = new GameAction(
+                  this,
+                  this.GetType().GetMethod("setNextState"),
+                  new object[0]);
+                GameAction skip = new GameAction(
+                  this,
+                  this.GetType().GetMethod("skipEvent"),
+                  new object[0]);
+                InputManager.AddToKeyboardMap(Keys.Space, next);
+                InputManager.AddToKeyboardMap(Keys.Tab, skip);
+            }
+
+            public void setNextState()
+            {
+                intro.nextState = true;
+            }
+
+            public void skipEvent()
+            {
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
+            }
+
+            public void Update(GameTime gameTime, Vector2 v)
+            {
+                if (this.intro.nextState)
+                {
+                    intro.myEventState = new Instructions2(this.intro, effect, openingTxt);
+                }
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                String instructions = "Now, let me show you how to build you world!\n\n" +
+                                        "Use your mouse to move around the map\n\n\n" +
+                                        "Press spacebar to continue.";
+
+                //want to draw dad god
+                batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
+            }
+        }
+
+        class Instructions2 : EventState
+        {
+            private SoundEffect effect;
+            private SpriteFont openingTxt;
+            private Introduction intro;
+
+            public Instructions2(Introduction intro, SoundEffect effect, SpriteFont openingText)
+            {
+                this.intro = intro;
+                intro.nextState = false;
+                this.effect = effect;
+                SetUpInput();
+                this.openingTxt = openingText;
+            }
+
+            public void SetUpInput()
+            {
+                GameAction next = new GameAction(
+                  this,
+                  this.GetType().GetMethod("setNextState"),
+                  new object[0]);
+                GameAction skip = new GameAction(
+                  this,
+                  this.GetType().GetMethod("skipEvent"),
+                  new object[0]);
+                InputManager.AddToKeyboardMap(Keys.Space, next);
+                InputManager.AddToKeyboardMap(Keys.Tab, skip);
+            }
+
+            public void setNextState()
+            {
+                intro.nextState = true;
+            }
+
+            public void skipEvent()
+            {
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
+            }
+
+            public void Update(GameTime gameTime, Vector2 v)
+            {
+                if (this.intro.nextState)
+                {
+                    intro.myEventState = new Instructions3(this.intro, effect, openingTxt);
+                }
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                String instructions = "On the bottom of your screen are your powers.\n\n" +
+                                        "To use a power, you must first select it.\n\n" +
+                                        "To select a power, press the key to the\n"+
+                                        "associated number on your keyboard.\n\n" +
+                                        "Then click where you wish to use it!\n" + 
+                                        "Some powers can only work on certain items,\n" + 
+                                        "and others can only work on empty tiles.\n\n\n" +
+                                        "Press spacebar to continue.";
+
+                //want to draw dad god
+                batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
+            }
+        }
+
+        class Instructions3 : EventState
+        {
+            private SoundEffect effect;
+            private SpriteFont openingTxt;
+            private Introduction intro;
+
+            public Instructions3(Introduction intro, SoundEffect effect, SpriteFont openingText)
+            {
+                this.intro = intro;
+                intro.nextState = false;
+                this.effect = effect;
+                SetUpInput();
+                this.openingTxt = openingText;
+            }
+
+            public void SetUpInput()
+            {
+                GameAction next = new GameAction(
+                  this,
+                  this.GetType().GetMethod("setNextState"),
+                  new object[0]);
+                GameAction skip = new GameAction(
+                  this,
+                  this.GetType().GetMethod("skipEvent"),
+                  new object[0]);
+                InputManager.AddToKeyboardMap(Keys.Space, next);
+                InputManager.AddToKeyboardMap(Keys.Tab, skip);
+            }
+
+            public void setNextState()
+            {
+                intro.nextState = true;
+            }
+
+            public void Update(GameTime gameTime, Vector2 v)
+            {
+                if (this.intro.nextState)
+                {
+                    intro.myEventState = new Instructions4(this.intro, effect, openingTxt);
+                }
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                String instructions = "Above your powers, you can see your current level,\n" +
+                                        "and your experience.\n\n" +
+                                        "Everyime you use an ability, you gain experience.\n" +
+                                        "Everytime you grow a level, you gain an ability.\n\n\n" +
+                                        "Press spacebar to continue.";
+
+                //want to draw dad god
+                batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
+            }
+        }
+
+        class Instructions4 : EventState
+        {
+            private SoundEffect effect;
+            private SpriteFont openingTxt;
+            private Introduction intro;
+
+            public Instructions4(Introduction intro, SoundEffect effect, SpriteFont openingText)
+            {
+                this.intro = intro;
+                intro.nextState = false;
+                this.effect = effect;
+                SetUpInput();
+                this.openingTxt = openingText;
+            }
+
+            public void SetUpInput()
+            {
+                GameAction next = new GameAction(
+                  this,
+                  this.GetType().GetMethod("setNextState"),
+                  new object[0]);
+                GameAction skip = new GameAction(
+                  this,
+                  this.GetType().GetMethod("skipEvent"),
+                  new object[0]);
+                InputManager.AddToKeyboardMap(Keys.Space, next);
+                InputManager.AddToKeyboardMap(Keys.Tab, skip);
+            }
+
+            public void setNextState()
+            {
+                intro.nextState = true;
+            }
+
+            public void skipEvent()
+            {
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
+            }
+
+            public void Update(GameTime gameTime, Vector2 v)
+            {
+                if (this.intro.nextState)
+                {
+                    intro.myEventState = new Instructions5(this.intro, effect, openingTxt);
+                }
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                String instructions = "It is okay if you make a mistake!\n" +
+                                        "Just right click on the tile you don't like,\n" +
+                                        "and it will be cleared!\n" +
+                                        "Be careful, once it is erased, you cannot get it back!\n\n\n" +
+                                        "Press spacebar to continue.";
+
+                //want to draw dad god
+                batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
+            }
+        }
+
+        class Instructions5 : EventState
+        {
+            private SoundEffect effect;
+            private SpriteFont openingTxt;
+            private Introduction intro;
+
+            public Instructions5(Introduction intro, SoundEffect effect, SpriteFont openingText)
+            {
+                this.intro = intro;
+                intro.nextState = false;
+                this.effect = effect;
+                SetUpInput();
+                this.openingTxt = openingText;
+            }
+
+            public void SetUpInput()
+            {
+                GameAction next = new GameAction(
+                  this,
+                  this.GetType().GetMethod("setNextState"),
+                  new object[0]);
+                GameAction skip = new GameAction(
+                  this,
+                  this.GetType().GetMethod("skipEvent"),
+                  new object[0]);
+                InputManager.AddToKeyboardMap(Keys.Space, next);
+                InputManager.AddToKeyboardMap(Keys.Tab, skip);
+            }
+
+            public void setNextState()
+            {
+                intro.nextState = true;
+            }
+
+            public void skipEvent()
+            {
+                intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
+            }
+
+            public void Update(GameTime gameTime, Vector2 v)
+            {
+                if (this.intro.nextState)
+                {
+                    intro.myEventState = new IntroStateOver(this.intro, effect, openingTxt);
+                }
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                String instructions = "One last piece of advice: try everything!\n" +
+                                        "You never know what may happen!\n\n" +
+                                        "Good luck, and have fun, my child!\n\n\n\n\n" + 
+                                        "If at any point you wish to exit the game, press the Escape Key.\n\n" +
+                                        "Press spacebar to continue.";
+
+                //want to draw dad god
+                batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
         }
 
