@@ -52,11 +52,11 @@ namespace FWPGame
         public FWPGame()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1280;  
+            graphics.PreferredBackBufferHeight = 1024; 
             Content.RootDirectory = "Content";
-            graphics.IsFullScreen = false; // true;
-        }
+            graphics.IsFullScreen = true;
+        }  
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
