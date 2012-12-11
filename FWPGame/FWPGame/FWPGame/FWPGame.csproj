@@ -64,6 +64,8 @@
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Net, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Xna.Framework.Storage, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -72,9 +74,47 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animate.cs" />
+    <Compile Include="Engine\Cursor.cs" />
+    <Compile Include="Engine\GameAction.cs" />
+    <Compile Include="Engine\InputManager.cs" />
+    <Compile Include="Engine\MapTile.cs" />
+    <Compile Include="Events\BrotherFire.cs" />
+    <Compile Include="Events\Apocalypse.cs" />
+    <Compile Include="Events\Ending.cs" />
+    <Compile Include="Events\Event.cs" />
+    <Compile Include="Events\EventState.cs" />
+    <Compile Include="Events\Introduction.cs" />
+    <Compile Include="Events\LearnPowerCombo.cs" />
+    <Compile Include="Events\SisterTrouble.cs" />
+    <Compile Include="Items\Grass.cs" />
+    <Compile Include="Engine\Map.cs" />
+    <Compile Include="Engine\Player.cs" />
+    <Compile Include="Items\Halo.cs" />
+    <Compile Include="Items\House.cs" />
+    <Compile Include="Items\Road.cs" />
+    <Compile Include="Items\Tornado.cs" />
+    <Compile Include="Items\Water.cs" />
+    <Compile Include="LoadObjects.cs" />
+    <Compile Include="Items\People.cs" />
+    <Compile Include="Powers\BuildHouse.cs" />
+    <Compile Include="Powers\BuildRoad.cs" />
+    <Compile Include="Powers\Electric.cs" />
+    <Compile Include="Powers\Fire.cs" />
+    <Compile Include="Powers\GrowGrass.cs" />
+    <Compile Include="Powers\MakePerson.cs" />
+    <Compile Include="Powers\Power.cs" />
+    <Compile Include="Powers\Protect.cs" />
+    <Compile Include="Powers\Rain.cs" />
+    <Compile Include="Powers\SproutTree.cs" />
+    <Compile Include="Powers\Wind.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="FWPGame.cs" />
+    <Compile Include="Sprite.cs" />
+    <Compile Include="State.cs" />
+    <Compile Include="Items\Tree.cs" />
+    <Compile Include="Items\Wood.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
