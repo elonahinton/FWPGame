@@ -367,7 +367,7 @@ namespace FWPGame.Engine
                     {
                         case 2:
                             {
-                                scene = new BrotherFire(broGod, new Vector2(0, 0), new Vector2(0, 0), broFont);
+                                scene = new BrotherFire(broGod, new Vector2(0, 0), new Vector2(0, 0), broFont, myMap);
                                 break;
                             }
                         case 4:

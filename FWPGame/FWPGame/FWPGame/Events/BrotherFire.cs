@@ -19,13 +19,15 @@ namespace FWPGame.Events
     public class BrotherFire : Event
     {
         private bool nextState;
+        private Map map;
 
-        public BrotherFire(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font) :
+        public BrotherFire(Texture2D texture, Vector2 position, Vector2 mapPosition, SpriteFont font, Map aMap) :
             base(texture, position, mapPosition, font)
         {
             myMapPosition = mapPosition;
             myTexture = texture;
             myPosition = position;
+            this.map = aMap;
             this.myEventState = new BroVisit(this, null, font); //second argument is sound effect, if wanted
         }
 
@@ -83,6 +85,7 @@ namespace FWPGame.Events
             private SoundEffect effect;
             private SpriteFont openingTxt;
             private BrotherFire angryBro;
+            private MapTile burnTile;
 
             public FireballState(BrotherFire angryBroEvent, SoundEffect soundEffect, SpriteFont openingText)
             {
@@ -107,12 +110,6 @@ namespace FWPGame.Events
                 angryBro.nextState = true;
             }
 
-            //don't let them skip event?
-            //public void skipEvent()
-            //{
-            //    angryBro.myState = new EndingStateOver(this.angryBro, effect, openingTxt);
-            //}
-
             public void Update(GameTime gameTime, Vector2 v)
             {
                 if (this.angryBro.nextState)
@@ -125,10 +122,9 @@ namespace FWPGame.Events
             {
                 String instructions = "";                
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
-
             }
 
-            public List<MapTile> BurnTiles(Map map)
+            public MapTile BurnTiles(Map map)
             {
                 List<MapTile> tiles = new List<MapTile>();
                 int tilesX = (int) (map.mySize.X / map.getMaxTileSize());
@@ -144,7 +140,16 @@ namespace FWPGame.Events
                         }
                     }
                 }
-                return tiles;
+                if (tiles.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    Random rand = new Random();
+                    int tileNum = rand.Next(0, tiles.Count);
+                    return tiles[tileNum];
+                }
             }
 
             public bool isBurnable(MapTile tile)
@@ -157,6 +162,53 @@ namespace FWPGame.Events
                     }
                 }
                 return false;
+            }
+        }
+
+        class NoBurnState : EventState
+        {
+            private SoundEffect effect;
+            private SpriteFont openingTxt;
+            private BrotherFire angryBro;
+
+            public NoBurnState(BrotherFire angryBroEvent, SoundEffect soundEffect, SpriteFont openingText)
+            {
+                this.angryBro = angryBroEvent;
+                this.angryBro.nextState = false;
+                this.effect = soundEffect;
+                SetUpInput();
+                this.openingTxt = openingText;
+            }
+
+            public void SetUpInput()
+            {
+                GameAction next = new GameAction(
+                  this,
+                  this.GetType().GetMethod("setNextState"),
+                  new object[0]);
+                InputManager.AddToKeyboardMap(Keys.Space, next);
+            }
+
+            public void setNextState()
+            {
+                angryBro.nextState = true;
+            }
+
+            public void Update(GameTime gameTime, Vector2 v)
+            {
+                if (this.angryBro.nextState)
+                {
+                    angryBro.myEventState = new EndState(this.angryBro, effect, openingTxt);
+                }
+            }
+
+            public void Draw(SpriteBatch batch)
+            {
+                String instructions = "Awww! You have nothing to burn!\n" +
+                                        "Well, have this anyway!\n\n" +
+                                        "You have been given the fire power!";
+                //draw brother
+                batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
         }
 
@@ -181,24 +233,13 @@ namespace FWPGame.Events
                   this,
                   this.GetType().GetMethod("setNextState"),
                   new object[0]);
-                //GameAction skip = new GameAction(
-                //  this,
-                //  this.GetType().GetMethod("skipEvent"),
-                //  new object[0]);
                 InputManager.AddToKeyboardMap(Keys.Space, next);
-                //InputManager.AddToKeyboardMap(Keys.Tab, skip);
             }
 
             public void setNextState()
             {
                 angryBro.nextState = true;
             }
-
-            //don't let them skip event?
-            //public void skipEvent()
-            //{
-            //    angryBro.myState = new EndingStateOver(this.angryBro, effect, openingTxt);
-            //}
 
             public void Update(GameTime gameTime, Vector2 v)
             {
@@ -210,7 +251,8 @@ namespace FWPGame.Events
 
             public void Draw(SpriteBatch batch)
             {
-                String instructions = "It was fun, Kid! See ya!";
+                String instructions = "It was fun, Kid! See ya!\n\n" +
+                                        "You have learned the fire power!";
                 //draw brother
                 batch.DrawString(openingTxt, instructions, new Vector2(0, 0), Color.White);
             }
